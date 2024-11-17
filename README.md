@@ -1,1 +1,12 @@
 # SCAagent
+
+## features design
+
+input: a folder of single cell data
+
+read initial gene data file, column info
+identify main steps (action units)
+split tasks into specific agents, agents decide what tools to use and test with paramters
+coding and debugging
+evaluate on file by file basis
+cumulate the result
