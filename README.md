@@ -1,4 +1,6 @@
 # SCAagent
+update: moved to Kaggle for memory requirement for large dataset:
+can be accessed here: https://www.kaggle.com/code/silvia46/sca-analysis
 
 ## features design
 
