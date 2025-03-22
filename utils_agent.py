@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import gseapy as gp
 import os, re
+import warnings
+from anndata import ImplicitModificationWarning
 # load and mark
 
 def load_and_annotate_h5_files(folder_path="/Users/silviachen/Documents/Software/SCAagent/h5_file"):
@@ -17,11 +19,19 @@ def load_and_annotate_h5_files(folder_path="/Users/silviachen/Documents/Software
     Returns:
         AnnData: Merged and annotated AnnData object.
     """
+   
 
+    warnings.filterwarnings("ignore", 
+                            category=UserWarning,
+                            module=".*")
+
+    warnings.filterwarnings("ignore", 
+                            category=UserWarning,
+                            module="tqdm.auto")
     # Define sample group mapping based on BL number
     sample_group_mapping = {
-        "BL1": "Ctl", "BL2": "Ctl", "BL3": "Ctl",  # Control group
-        "BL4": "Her", "BL5": "Her", "BL6": "Her", "BL7": "Her", "BL8": "Her",  # Hereditary CP
+        "BL6": "Ctl", "BL7": "Ctl", "BL8": "Ctl",  # Control group
+        "BL1": "Her", "BL2": "Her", "BL3": "Her", "BL4": "Her", "BL5": "Her",  # Hereditary CP
         "BL9": "Idio", "BL10": "Idio", "BL11": "Idio", "BL12": "Idio"  # Idiopathic CP
     }
 
@@ -86,7 +96,7 @@ def filter_cells(adata, min_cells=3, min_genes=200, max_genes=50000):
     sc.pp.filter_cells(adata, max_genes=max_genes)  # Remove cells with >50,000 genes
 
 def normalize_log_transform(adata, target_sum = 1e4):
-    sc.pp.normalize_total(adata, target_sum)
+    sc.pp.normalize_total(adata, target_sum = target_sum)
     sc.pp.log1p(adata)
 
 def filter_lowqc_cells(adata, pct_counts_mt_upbound = 10, n_genes_by_counts = None, pct_counts_mt_lowbound = None):
@@ -119,7 +129,7 @@ def pca_and_plot_umap(adata, n_pcs = 40, n_neighbors = 10, resolution = 0.5):
 
     sc.pp.neighbors(adata, n_neighbors=n_neighbors, n_pcs=n_pcs)  # Adjusted k for stability
 
-    sc.tl.leiden(adata, resolution=resolution)  # Balanced resolution
+    sc.tl.leiden(adata, resolution=resolution, flavor="igraph",  n_iterations=2)  # Balanced resolution
 
     sc.tl.umap(adata)
     
@@ -139,7 +149,7 @@ def annoatate_by_markers(adata, marker_gene_dict):
     cluster_means = (
         adata.to_df()
         .join(adata.obs['leiden'])  # Add cluster labels
-        .groupby('leiden')  # Group by cluster
+        .groupby('leiden', observed = False)  # Group by cluster
         .mean()  # Compute mean expression per cluster
     )
     cluster_annotations = {}
@@ -172,7 +182,7 @@ def plot_cluster_distribution_by_BL(adata, target = "cell_type"): # or use leide
     """
 
     # Step 1: Count the number of cells per (BL_number, leiden cluster)
-    cluster_counts = adata.obs.groupby(["BL_number", target]).size().unstack(fill_value=0)
+    cluster_counts = adata.obs.groupby(["BL_number", target], observed = False).size().unstack(fill_value=0)
 
     # Step 2: Normalize to get fractions per BL_number
     cluster_fractions = cluster_counts.div(cluster_counts.sum(axis=1), axis=0)
@@ -217,7 +227,7 @@ def plot_cluster_frequencies(
     # 1) Count cells per sample/cluster/group
     df = (
         adata.obs
-        .groupby([sample_key, group_key, cluster_key])
+        .groupby([sample_key, group_key, cluster_key], observed = False)
         .size()
         .reset_index(name="count")
     )
@@ -225,7 +235,7 @@ def plot_cluster_frequencies(
     # 2) Get total cells per sample and merge
     totals = (
         adata.obs
-        .groupby(sample_key)
+        .groupby(sample_key, observed = False)
         .size()
         .reset_index(name="total_count")
     )
@@ -242,7 +252,7 @@ def plot_cluster_frequencies(
         y="fraction",
         hue=group_key,
         estimator=np.mean,
-        ci="sd",         # show st. dev. error bars
+        errorbar='sd',         # show st. dev. error bars
         capsize=0.2
     )
     

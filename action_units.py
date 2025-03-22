@@ -25,19 +25,31 @@ class ActionUnitWithContext(ActionUnit):
 general_action_units = {
     "general_unit": """
       You are to conduct Single Cell analysis on the given data. 
+      Before start, use import warnings
+      warnings.filterwarnings("ignore", category=UserWarning) to filter the warning
+
       You should first quality control & filter the data,
       PCA and compute UMAP,
-      annotate with given functions and markers,
-      plot your UMAP by cell_type and leiden cluster,
-      
+      annotate with given functions and marker set marker_genes from markers.py,
+      plot your UMAP by cell_type, sample_group, and leiden cluster,
+      plot cluster distribution by BL and plot by frequency with given function.
       do DEG and GSEA.
+
+      and then extract the t cell from previous adata into adata_t. t cell is with "T_cells" in its adata.obs['cell_type'].
+      redo log transform, PCA and compute UMAP,
+      
+      annotate with given functions and marker set marker_genes_t from markers.py,
+
+      plot your UMAP by cell_type, sample_group, and leiden cluster,
+      plot cluster distribution by BL and then plot by frequency with given function.
+
       All required path has been specified for you as default parameter, you do not need to modify them. You are allowed to tune other given params.
       You are given the following helper functions, and you should fully leverage them to conduct analysis.
-
+      
       
 
       You can import them using "from utils_agent import load_and_annotate_h5_files, filter_cells, normalize_log_transform, filter_lowqc_cells, save_high_var_gene, pca_and_plot_umap, annoatate_by_markers"
-      You will need marker_genes for annotation. Use from markers import marker_genes for the function.
+      You will need marker dict for annotation. Use from markers import marker_genes, marker_genes_t for the function.
       Important: All return types are marked for you. If a return type is an adata, you should write as adata = func(adata). Otherwise you will miss important information.
 
       def load_and_annotate_h5_files(folder_path="/Users/silviachen/Documents/Software/SCAagent/h5_file") -> adata;

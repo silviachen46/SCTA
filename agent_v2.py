@@ -1,8 +1,8 @@
 from call_gpt import OpenAiClient
-from executenote import execute_code_in_notebook, delete_notebook_blocks, extract_python_code
+from executenote import execute_code_in_notebook, extract_python_code
 import json
 from prompts import CODING_ROLE_PROMPT, DEBUGGING_REVIEW_PROMPT, DEBUGGING_ROLE_PROMPT, GENERAL_REVIEW_PROMPT, UPDATE_CODE_PROMPT, CODING_INSTRUCTION
-GLOBAL_PATH = "v2agent1.ipynb"
+GLOBAL_PATH = "v2agent3.ipynb"
 import re
 from action_units import general_action_units, ActionUnit, ActionUnitWithContext
 
@@ -73,8 +73,8 @@ class DataScienceAgent:
         print("done")
         
         result_text, result_code = self.run_action_code(curr_code, curr_history, success_code_history) # until we have approved result
-        
-        result = "Code: " + result_code + "\n" + result_text
+        result_text_str = "\n".join(result_text) if isinstance(result_text, list) else str(result_text)
+        result = "Code: " + result_code + "\n" + result_text_str
         # had an updated notebook here
         # the current action unit is finished.
         return result
@@ -106,6 +106,7 @@ class DataScienceAgent:
     # execute and get result
     def run_action_code(self, curr_code, curr_history, success_code_history, max_round = 3):
         result_list = []
+        print(curr_code)
         result = execute_code_in_notebook(GLOBAL_PATH, curr_code)
         print(result)
         result_list.append(result)
@@ -130,14 +131,14 @@ class DataScienceAgent:
                 # send to reviewer agent for review
                 curr_history.curr_result = result['code_result']
 
-                general_review_result = self.reviewer.review(curr_code, result, task_desc = curr_history.action_unit.instruction, is_debug = False, run_history = result_list, succcess_code_history = curr_code)
+                general_review_result = self.reviewer.review(curr_code, result, task_desc = curr_history.action_unit.instruction, is_debug = False, run_history = result_list)
                 print(general_review_result)
                 if general_review_result['decision'] == 'Approved':
                     self.result_code_list.append(curr_code) # collection of all code blocks successfully run and approved by reviewer
                     return result['code_result'], curr_code# we terminate only if error less and approved
                 else:
                     result['code_review'] = general_review_result['reason'] # contains a dictionary like {"decision":"Approved/Denied", "reason":"Approved Reason/ Denied Reason"}
-                    delete_notebook_blocks(GLOBAL_PATH, cell_id=result['metadata']) # code is correct but not approved, removed manually
+                    #delete_notebook_blocks(GLOBAL_PATH, cell_id=result['metadata']) # code is correct but not approved, removed manually
 
                 
             else: # there's error

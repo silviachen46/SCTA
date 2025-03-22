@@ -1,0 +1,11 @@
+openai
+pydantic
+nbformat
+nbconvert
+pandas
+numpy
+tqdm
+scanpy
+matplotlib
+seaborn
+gseapy

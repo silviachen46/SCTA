@@ -64,3 +64,19 @@ marker_genes = {
     #     "KRT19", "KRT7", "EPCAM"  # Epithelial (ductal) cells
     # ]
 }
+
+marker_genes_t = {
+    "CD4_T_cells_CCR6": ["CCR6", "IL17A", "RORC"],  # Th17 cells
+    "CD8_Tc1": ["GZMA", "PRF1", "IFNG"],  # Cytotoxic CD8+ T cells (Tc1)
+    "CD4_T_cells_FTH1": ["FTH1", "HSP90AA1", "SOD2"],  # FTH1-high CD4+ T cells
+    "CD4_T_cells_BAG3": ["BAG3", "HSPA1A", "DNAJB1"],  # BAG3-high CD4+ T cells
+    "CD4_T_cells_Th1": ["TBX21", "IFNG", "CXCR3"],  # Th1 cells
+    "CD8_Tc2_HLA-DR_GZMK": ["HLA-DRA", "GZMK", "LAG3"],  # Exhausted CD8+ T cells
+    "CD8_Tc3_BAG3": ["BAG3", "HSPA1B", "DDIT4"],  # BAG3-high CD8+ T cells
+    "CD8_Tc4": ["GZMH", "CCL5", "CD8A"],  # CD8+ T cell subset 4
+    "NK_cells": ["NCAM1", "KLRF1", "NKG7"],  # Natural Killer (NK) cells
+    "MALAT1_cells": ["MALAT1", "NEAT1", "XIST"],  # MALAT1+ cells
+    "Treg": ["FOXP3", "IL2RA", "CTLA4"],  # Regulatory T cells
+    "Naïve_CD4_T_cells": ["SELL", "CCR7", "LEF1"],  # Naïve CD4+ T cells
+    "CD8_Tc5_NK-like": ["EOMES", "NKG7", "GNLY"],  # NK-like CD8+ T cells
+}

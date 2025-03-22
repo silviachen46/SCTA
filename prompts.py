@@ -10,9 +10,12 @@ current error output: {curr_code_output}
 You can also refer to this history of code and reviews to avoid mistakes made in the previous reviews:
 {run_history}
 """
+# You should look into the analysis result carefully and find any possible improvements.
 GENERAL_REVIEW_PROMPT = """You are given a task description, a code snippet from a jupyter notebook, and the running result from the code snippet.
-Compare and analyze if the goal of the task has been completely satisfied by the code. If yes you should approve the result, if not deny it, give detailed reason and prompt for improvement. 
+Compare and analyze if the goal of the task has been completely satisfied by the code, and the result make sense biologically enough. If yes you should approve the result, if not deny it, give detailed reason and prompt for improvement. 
+You should not approve if there are any possible improvements to make the result more biologically make sense, like adjusting the parameters.
 At this step you can assume the data integrity and focus on if the instruction is properly satisfied.
+
 Task: {task}
 Code: {code}
 Output: {code_output}
