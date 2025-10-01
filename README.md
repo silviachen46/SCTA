@@ -2,7 +2,11 @@
 updated note on 10/01/2025:
 
 ## Setup
-ensures executenote, utils_agent, main, agent_v5, call_gpt, and the h5ad file to be analyzed is being placed in the same folder.
+1. ensures executenote, utils_agent, main, agent_v5, call_gpt, and the h5ad file to be analyzed is being placed in the same folder.
+
+2. replace all the path variables marked out in agent_v5, setup azure openai credentials in call_gpt
+
+3. run main.py. Results from each step are being saved to the graph.txt file specified. You should also see a ipynotebook containing the python code generated.
 
 
 
