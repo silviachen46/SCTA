@@ -1,4 +1,8 @@
 # SCAagent
+update setup note on 10/01/2025:
+
+
+
 update: moved to Kaggle for memory requirement for large dataset:
 can be accessed here: https://www.kaggle.com/code/silvia46/sca-analysis
 
