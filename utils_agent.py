@@ -1,3 +1,4 @@
+from typing import Dict, List, Union
 import scanpy as sc
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -10,6 +11,73 @@ import seaborn as sns
 from sklearn.metrics import adjusted_rand_score
 from itertools import product
 # load and mark
+
+import scanpy as sc
+import pandas as pd
+
+def quick_inspect_adata(adata, max_unique=8):
+    """
+    Quick & compact summary of AnnData.obs for visualization purposes.
+    """
+    print(f"Cells: {adata.n_obs}, Genes: {adata.n_vars}")
+    print("Available layers:", list(adata.layers.keys()))
+    print("Obsm keys:", list(adata.obsm.keys()))
+    print()
+
+    print("=== obs metadata (for visualization) ===")
+    for col in adata.obs.columns:
+        s = adata.obs[col]
+        nunique = s.nunique()
+
+        if s.dtype.name in ["category", "object"]:
+            # categorical columns
+            vals = s.unique()[:max_unique]
+            print(f"[CAT] {col} ({nunique} categories) → {list(vals)}{' ...' if nunique > max_unique else ''}")
+        elif pd.api.types.is_numeric_dtype(s):
+            # numeric columns
+            print(f"[NUM] {col} (range={s.min():.2f} ~ {s.max():.2f})")
+    print("=======================================")
+
+def assign_cell_categories(adata, cluster_to_category = None):
+    """
+    we use agent to analyze the top expressed gene above and give annotation for each of these clusters
+    """
+    adata.obs['cell_category'] = adata.obs['leiden'].map(cluster_to_category).fillna("Unknown")
+    return adata
+
+def load_and_annotate_adata(path="./"):
+    """
+    Loads 10X Genomics data, assigns sample_label and group to adata.obs.
+    Strips whitespace from group names to avoid downstream issues.
+    """
+    # Step 1: Load the data
+    adata = sc.read_10x_mtx(
+        path=path,
+        var_names="gene_symbols",
+        cache=True
+    )
+
+    # Step 2: Define suffix-to-label mapping
+    suffix_to_label = {
+        "-1": "nCoV 1", "-2": "nCoV 2", "-3": "Flu 1", "-4": "Flu 2",
+        "-5": "Normal 1", "-6": "Flu 3", "-7": "Flu 4", "-8": "Flu 5",
+        "-9": "nCoV 3", "-10": "nCoV 4", "-11": "nCoV 5", "-12": "nCoV 6",
+        "-13": "Normal 2", "-14": "Normal 3", "-15": "nCoV 7", "-16": "nCoV 8",
+        "-17": "nCoV 9", "-18": "nCoV 10", "-19": "Normal 4", "-20": "nCoV 11"
+    }
+
+    # Step 3: Helper to extract suffix from barcode
+    def extract_suffix(barcode):
+        return "-" + barcode.split("-")[-1]
+
+    # Step 4: Assign sample_label
+    adata.obs["sample_label"] = adata.obs_names.map(lambda x: suffix_to_label.get(extract_suffix(x), "Unknown"))
+
+    # Step 5: Assign group (removing whitespace)
+    adata.obs["group"] = adata.obs["sample_label"].str.extract(r"(\D+)").iloc[:, 0].str.strip()
+
+    return adata
+
 
 def load_and_annotate_h5_files(folder_path="/Users/silviachen/Documents/Software/SCAagent/h5_file"):
     """
@@ -62,8 +130,8 @@ def load_and_annotate_h5_files(folder_path="/Users/silviachen/Documents/Software
             # Annotate sample group and BL number
             metadata = pd.DataFrame({
                 'cell_id': adata.obs.index,  # Use cell barcodes as index
-                'sample_group': sample_group,
-                'BL_number': bl_number
+                'group': sample_group,
+                'label': bl_number
             })
             metadata.set_index("cell_id", inplace=True)
 
@@ -111,7 +179,8 @@ def filter_lowqc_cells(adata, pct_counts_mt_upbound = 10, n_genes_by_counts = No
         filtered_cells = adata.obs["pct_counts_mt"] <= pct_counts_mt_upbound
     adata = adata[filtered_cells].copy()
     # temporarily placed here for DEG
-    adata.obs["condition"] = adata.obs["BL_number"].apply(lambda x: "Control" if x in ["BL6", "BL7", "BL8"] else "CP")
+    # if BL_case:
+    #     adata.obs["condition"] = adata.obs["BL_number"].apply(lambda x: "Control" if x in ["BL6", "BL7", "BL8"] else "CP")
     return adata
 
 def save_high_var_gene(adata, n_top_genes = 4000):
@@ -221,6 +290,37 @@ def ari_grid_search_clustering(
 
     return final_adata, ari_df, best_label
 
+def get_top_marker_genes(adata, groupby='leiden', method='wilcoxon', top_n=3):
+    """
+    Performs rank_genes_groups and returns top N marker genes per cluster.
+
+    Parameters:
+    - adata: AnnData object
+    - groupby: column in adata.obs to group cells by (e.g., 'leiden')
+    - method: method for DEG (default: 'wilcoxon')
+    - top_n: number of top genes to extract per cluster
+
+    Returns:
+    - Dictionary with cluster name as key and top N genes as values
+    """
+    print(f"Ranking genes grouped by '{groupby}' using method '{method}'...")
+    warnings.simplefilter(action='ignore', category=pd.errors.PerformanceWarning)
+    sc.tl.rank_genes_groups(adata, groupby=groupby, method=method)
+
+    result = adata.uns['rank_genes_groups']
+    groups = result['names'].dtype.names  
+
+    top_genes = {
+        group: result['names'][group][:top_n].tolist()
+        for group in groups
+    }
+
+    print(f"\nTop {top_n} marker genes per '{groupby}' cluster:")
+    for cluster, genes in top_genes.items():
+        print(f"Cluster {cluster}: {', '.join(genes)}")
+
+    return top_genes
+
 def annotate_by_markers(
     adata, 
     marker_gene_dict, 
@@ -322,7 +422,12 @@ def display_umap(adata, target="cell_type"):
             centroid = umap_coords[indices].mean(axis=0)
             print(f"  {group} : {np.round(centroid, 3)}")
 
-def plot_cluster_distribution_by_BL(adata, target = "cell_type"): # or use leiden label for target
+ # Step 6: Color-code BL labels for Ctl (blue), Her (red), Idio (black)
+sample_colors = {"BL1": "blue", "BL2": "blue", "BL3": "blue",  # Ctl
+                    "BL4": "blue", "BL5": "blue", "BL6": "red", "BL7": "red", "BL8": "red",  # Her
+                    "BL9": "black", "BL10": "black", "BL11": "black", "BL12": "black"}  # Idio
+ 
+def plot_cluster_distribution_by_BL(adata, target = "cell_type", colname = "BL_number", sample_colors = sample_colors): # or use leiden label for target
     """
     Generates a stacked bar plot showing the fraction of Leiden clusters per BL_number.
     
@@ -331,7 +436,7 @@ def plot_cluster_distribution_by_BL(adata, target = "cell_type"): # or use leide
     """
 
     # Step 1: Count the number of cells per (BL_number, leiden cluster)
-    cluster_counts = adata.obs.groupby(["BL_number", target], observed = False).size().unstack(fill_value=0)
+    cluster_counts = adata.obs.groupby([colname, target], observed = False).size().unstack(fill_value=0)
 
     # Step 2: Normalize to get fractions per BL_number
     cluster_fractions = cluster_counts.div(cluster_counts.sum(axis=1), axis=0)
@@ -350,10 +455,7 @@ def plot_cluster_distribution_by_BL(adata, target = "cell_type"): # or use leide
     plt.yticks(fontsize=10)
     plt.legend(title="Leiden Cluster", bbox_to_anchor=(1.05, 1), loc="upper left", fontsize=10)
 
-    # Step 6: Color-code BL labels for Ctl (blue), Her (red), Idio (black)
-    sample_colors = {"BL1": "blue", "BL2": "blue", "BL3": "blue",  # Ctl
-                     "BL4": "blue", "BL5": "blue", "BL6": "red", "BL7": "red", "BL8": "red",  # Her
-                     "BL9": "black", "BL10": "black", "BL11": "black", "BL12": "black"}  # Idio
+   
 
     for i, label in enumerate(cluster_fractions.index):
         plt.gca().get_xticklabels()[i].set_color(sample_colors.get(label, "black"))  # Default black if not found
@@ -437,17 +539,6 @@ def plot_cluster_frequencies(
 
 
 # deg and gsea
-
-def get_deg(adata, top_n = 20, groupby = "condition", reference = "Control"):
-    
-    sc.tl.rank_genes_groups(adata, groupby=groupby, method="wilcoxon", reference=reference)
-
-    deg_results = pd.DataFrame(adata.uns["rank_genes_groups"]["names"]).head(top_n)  # Get top 20 genes
-
-    # Print top 20 DEGs
-    print("Top " + str(top_n) + " DEGs in CP vs Control:")
-    print(deg_results)
-
 def get_enrichment_analysis(adata, target = "CP", reference = "Control", groupby = "condition", file_path = "/Users/silviachen/Documents/Software/SCAagent/h5_file/h.all.v2024.1.Hs.symbols.gmt", top_n = 10):
     # Perform differential expression analysis
     sc.tl.rank_genes_groups(adata, groupby=groupby, reference=reference, method="wilcoxon")
@@ -470,3 +561,263 @@ def get_enrichment_analysis(adata, target = "CP", reference = "Control", groupby
     # Display enriched pathways
     print("Top Enriched Pathways in CP vs Control:")
     print(gsea_res.res2d[["Term", "ES", "NES"]].head(top_n))
+
+def get_deg_full(
+    adata,
+    groupby: str = "group",
+    reference: str = "Control",
+    method: str = "wilcoxon",
+    top_n: int = 20,
+    use_raw: bool = False,
+    layer: str = None,
+    pts: bool = True,
+    key_added: str = "rank_genes_groups",
+    n_genes : int = 300
+) -> dict[str, pd.DataFrame]:
+    import scanpy as sc
+    import pandas as pd
+
+    # 运行差异分析
+    sc.tl.rank_genes_groups(
+        adata,
+        groupby=groupby,
+        method=method,
+        reference=reference,
+        use_raw=use_raw,
+        layer=layer,
+        pts=pts,
+        key_added=key_added,
+        n_genes=n_genes,
+    )
+
+    result_dict = adata.uns[key_added]
+    groups = result_dict["names"].dtype.names
+    deg_summary = {}
+
+    for group in groups:
+
+        df = pd.DataFrame({
+            "gene": result_dict["names"][group],
+            "score": result_dict["scores"][group],
+            "logFC": result_dict["logfoldchanges"][group] if "logfoldchanges" in result_dict else [None]*len(result_dict["names"][group]),
+            "pval": result_dict["pvals"][group] if "pvals" in result_dict else [None]*len(result_dict["names"][group]),
+            "pval_adj": result_dict["pvals_adj"][group] if "pvals_adj" in result_dict else [None]*len(result_dict["names"][group]),
+        })
+
+
+        # 添加表达比例（可选）
+        if "pts" in result_dict:
+            df["pct_group"] = result_dict["pts"].loc[df["gene"], group].values
+        if "pts_rest" in result_dict:
+            df["pct_rest"] = result_dict["pts_rest"].loc[df["gene"], group].values
+
+        deg_summary[group] = df.head(top_n)
+    return deg_summary
+
+def tf_enrichment_from_adata(
+    adata: sc.AnnData,
+    group: Union[str, int],
+    top_n: int = 200,
+    gene_set: str = "KEGG_2021_Human",
+    organism: str = "Human",
+    outdir: str = "tf_enrichr_results",
+) -> pd.DataFrame:
+    # Extract top genes from adata
+    rank_data = adata.uns["rank_genes_groups"]
+    genes = pd.DataFrame(rank_data["names"])[group][:top_n].values.tolist()
+
+    # Run enrichr with DoRothEA
+    enr = gp.enrichr(
+        gene_list=genes,
+        gene_sets=gene_set,
+        organism=organism,
+        outdir=outdir,
+        cutoff=0.5  # minimum combined score
+    )
+    result = enr.results.sort_values(
+        by=["Adjusted P-value", "Combined Score"],
+        ascending=[True, False]
+    )
+    return result
+
+def merge_deg_summaries(
+    deg_summaries: List[Dict[str, pd.DataFrame]],
+    cell_types: List[str]
+) -> Dict[str, List[Dict[str, object]]]:
+    """
+    输入：
+    - deg_summaries: 每个 cell type 的 DEG 结果（多个 dict，每个 dict 只包含一个 group）
+    - cell_types: 与 deg_summaries 对应的 cell type 名称列表
+    
+    输出：
+    - gene_dict: 每个基因对应的 cell_type:stats 列表
+    """
+    gene_dict = {}
+
+    for cell_type, deg in zip(cell_types, deg_summaries):
+        for group, df in deg.items():
+            for _, row in df.iterrows():
+                gene = row["gene"]
+                info = {
+                    "cell_type": cell_type,
+                    "pval": row.get("pval", None),
+                    "score": row.get("score", None),
+                    "logFC": row.get("logFC", None),
+                    "pval_adj": row.get("pval_adj", None),
+                }
+                if gene not in gene_dict:
+                    gene_dict[gene] = []
+                gene_dict[gene].append(info)
+
+    return gene_dict
+
+
+def collect_tf_enrichment_details(
+    adata,
+    control_type: str,
+    group,
+    n_genes,
+    gene_set: str = "KEGG_2021_Human"
+) -> Dict[str, List[Dict[str, float]]]:
+    """
+    For selected clusters, runs TF enrichment and collects top 3 terms with gene associations.
+    If the same Term appears multiple times for a gene, retain the lower Adjusted P-value.
+
+    Returns:
+        Dict in format {gene: [ {"Term": ..., "adj_pval": ...}, ... ]}
+    """
+    #reset names column
+    del adata.uns["rank_genes_groups"]["names"]
+    get_deg_full(
+                adata,
+                groupby="group",          # Grouping by 'group' (Ctl, Her, Idio)
+                reference=control_type,          # Using Control (Ctl) as the reference
+                method="wilcoxon",        # Wilcoxon method for DEG analysis
+                top_n=20,                 # Top DEGs
+                use_raw=False,            # Do not use raw data
+                n_genes = n_genes
+            )
+    from collections import defaultdict
+
+    # Use nested dict to store best adj_pval per gene-term pair
+    gene_term_map = defaultdict(dict)
+
+    # Check if this cluster corresponds to a target cell type
+
+    # Run enrichment
+    tf_result = tf_enrichment_from_adata(adata, group=group, gene_set=gene_set)
+    top_rows = tf_result.iloc[:10]
+
+    for _, row in top_rows.iterrows():
+        term = row["Term"]
+        adj_pval = row["Adjusted P-value"]
+        genes = [g.strip() for g in row["Genes"].split(";")]
+
+        for gene in genes:
+            # If the term already exists for this gene, keep the smaller adj_pval
+            if term in gene_term_map[gene]:
+                gene_term_map[gene][term] = min(gene_term_map[gene][term], adj_pval)
+            else:
+                gene_term_map[gene][term] = adj_pval
+
+    # Convert to required format
+    final_result = {}
+    for gene, term_dict in gene_term_map.items():
+        final_result[gene] = [{"Term": term, "adj_pval": pval} for term, pval in term_dict.items()]
+
+    return final_result
+
+def merge_deg_tf_overlap(deg_dict: dict, tf_dict: dict) -> dict:
+    merged = {}
+    for gene in deg_dict:
+        if gene in tf_dict:
+            merged[gene] = {
+                "DEG": deg_dict[gene],
+                "TF enrichment": tf_dict[gene]
+            }
+    return merged
+
+def get_potential_gene_set(complete_list, adata, cell_types_to_analyze, group, control_type, n_genes):
+    merged_dict = merge_deg_summaries(complete_list, cell_types_to_analyze)
+    result = collect_tf_enrichment_details(adata, control_type, group, n_genes = n_genes)
+    merged_results = merge_deg_tf_overlap(deg_dict=merged_dict, tf_dict=result)
+    print("Current Group:" + str(group))
+    print(merged_results)
+    return merged_results
+
+def get_gene_by_disease(adata, curr_adata, curr_group, cell_types_to_analyze, n_genes, control_type):
+    complete_list = []
+    for cell_type in cell_types_to_analyze:
+        adata_temp = curr_adata[curr_adata.obs['cell_category'] == cell_type].copy()
+        if adata_temp.obs["group"].value_counts().get(control_type, 0) < 5:
+            continue
+        deg_results = get_deg_full(
+            adata_temp,
+            groupby="group",          # Grouping by 'group' (Ctl, Her, Idio)
+            reference=control_type,          # Using Control (Ctl) as the reference
+            method="wilcoxon",        # Wilcoxon method for DEG analysis
+            top_n=20,                 # Top DEGs
+            use_raw=False,            # Do not use raw data
+            key_added=f"deg_{cell_type}",  # Custom key for identifying result in adata
+            n_genes = n_genes
+        )
+        complete_list.append(deg_results)
+    potential_gene_set = get_potential_gene_set(
+        complete_list,           # Pass the complete list containing DEG results
+        adata,                   # Original AnnData object for context
+        cell_types_to_analyze,    # Cell types analyzed
+        group = curr_group,
+        control_type=control_type,
+        n_genes = n_genes
+    )
+    return potential_gene_set
+
+
+def build_prerank_from_deg(adata, target: str, key_added: str = "rank_genes_groups") -> pd.Series:
+
+    rg = adata.uns.get(key_added, None)
+    if rg is None:
+        raise KeyError(f"'{key_added}' not found in adata.uns. Please run rank_genes_groups / get_deg_full first.")
+
+    if target not in rg["names"].dtype.names:
+        raise ValueError(f"Target '{target}' not found in groups. Please check group name.")
+
+    genes = pd.Index(rg["names"][target])
+    if "logfoldchanges" in rg and rg["logfoldchanges"] is not None:
+        vals = pd.Series(rg["logfoldchanges"][target], index=genes).astype(float)
+    else:
+        vals = pd.Series(rg["scores"][target], index=genes).astype(float)
+
+    vals = vals.replace([np.inf, -np.inf], np.nan).fillna(0.0)
+    return vals.sort_values(ascending=False)
+
+import gseapy as gp
+import os
+
+def gsea_with_existing_deg(
+    adata,
+    target: str,                     
+    key_added: str = "rank_genes_groups",
+    gene_sets: str | list | dict = "MSigDB_Hallmark_2020", 
+    outdir: str = "gsea_out",
+    permutation_num: int = 1000,
+    processes: int = 4,
+    seed: int = 0,
+    figure_format: str = "png",
+):
+    rnk = build_prerank_from_deg(adata, target=target, key_added=key_added)
+    subdir = os.path.join(outdir, f"{key_added}_{target}")
+    os.makedirs(subdir, exist_ok=True)
+
+    res = gp.prerank(
+        rnk=rnk,
+        gene_sets=gene_sets,
+        permutation_num=permutation_num,
+        processes=processes,
+        outdir=subdir,
+        seed=seed,
+        format=figure_format,
+        no_plot=False,
+        verbose=True,
+    )
+    return res.res2d.sort_values("nes", ascending=False), res._outdir
