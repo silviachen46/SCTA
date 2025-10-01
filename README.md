@@ -2,7 +2,7 @@
 updated note on 10/01/2025:
 
 ## Setup
-1. ensures executenote, utils_agent, main, agent_v5, call_gpt, and the h5ad file to be analyzed is being placed in the same folder.
+1. ensures executenote, utils_agent, main, agent_v5, call_gpt, and the h5ad file to be analyzed is being placed in the same folder. These are all the files needed.
 
 2. replace all the path variables marked out in agent_v5, setup azure openai credentials in call_gpt
 
