@@ -2,7 +2,8 @@
 updated note on 10/01/2025:
 
 ## Setup
-ensures executenote.py, agent_utils, main, agent_v5 and the h5ad file to be analyzed is being placed in the same folder.
+ensures executenote, utils_agent, main, agent_v5, call_gpt, and the h5ad file to be analyzed is being placed in the same folder.
+
 
 
 update: moved to Kaggle for memory requirement for large dataset:
