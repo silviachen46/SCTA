@@ -39,9 +39,6 @@ from nbconvert.preprocessors import ExecutePreprocessor
 import psutil
 import gc
 
-def clean_error_message(error_msg: str) -> str:
-    return error_msg
-
 def execute_code_in_notebook(notebook_path: str, code: str):
     status_dictionary = {}
     memory_code = (
