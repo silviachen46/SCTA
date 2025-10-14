@@ -64,7 +64,8 @@ You should first quality control & filter the data,
 PCA and compute UMAP.
 get top marker gene for each cluster using the function provided.
 save your adata locally to current folder named as adata_preprocessed.h5ad
-You should also inspect adata structure by calling the given quick inspect function
+You should also inspect adata structure by calling the given quick inspect function. 
+I will use this regex to match the code. Generate python code following this patter: pattern = r"```python\n(.*?)\n```"
 Here is the set of functions available for you to use. You should use functions whenever possible:
 {functions}
 """
@@ -90,6 +91,8 @@ cluster_to_category = {{
 and inject it as param to the given function to assign categories.
 use pd.crosstab(adata.obs["cell_category"], adata.obs["group"]) to show some insights for further analysis
 SAVE your adata locally to current folder named as adata_annotated.h5ad
+I will use this regex to match the code. Generate python code following this patter: pattern = r"```python\n(.*?)\n```"
+
 Here's the biological context of the adata:
 {context}
 Here's the DEG results from previous step:
@@ -129,6 +132,8 @@ Based on former result, first figure out different types of disease subtype to s
 save a copy for each of their adata with the control type: adata_a = adata[adata.obs['group'].isin(['control_type', 'a'])].copy() for each of the disease subtype. You should adjust control_type name as given.
 Now for each of these sub adata using something like for curr_adata, curr_group in zip([adata_a, adata_b], ["a", "b"]): , 
 get potential gene set for each disease type using the function provided with adata(the original one), curr_adata, curr_group, cell_types_to_analyze, and the control_type name in current dataset.
+I will use this regex to match the code. Generate python code following this patter: pattern = r"```python\n(.*?)\n```"
+
 Here is the set of functions available for you to use. You should use functions whenever possible:
 {functions}
 """
@@ -148,6 +153,7 @@ Task Description : {task_desc}
 Wrong Code: {wrong_code}
 Error Trace: {error_trace}
 Write correct version of the python code to conduct the task.
+I will use this regex to match the code. Generate python code following this patter: pattern = r"```python\n(.*?)\n```"
 """
 class AgentBase:
     def __init__(self, role_prompt="", tool_prompt=None, task_prompt = None):
