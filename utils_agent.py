@@ -629,7 +629,7 @@ def tf_enrichment_from_adata(
     # Run enrichr with DoRothEA
     enr = gp.enrichr(
         gene_list=genes,
-        gene_sets=gene_set,
+        gene_sets="/Users/silviachen/Documents/Software/SCAagent/template_code/KEGG_2021_Human.gmt",
         organism=organism,
         outdir=outdir,
         cutoff=0.5  # minimum combined score
@@ -762,6 +762,19 @@ def get_gene_by_disease(adata, curr_adata, curr_group, cell_types_to_analyze, n_
             n_genes = n_genes
         )
         complete_list.append(deg_results)
+        with open("deg_tmp_results.txt", "a", encoding="utf-8") as f:
+            f.write(f"## {cell_type}\n")
+            for grp, df in deg_results.items():
+                preferred_cols = [
+                    "gene", "score", "logFC", "pval", "pval_adj", "pct_group", "pct_rest"
+                ]
+                cols = [c for c in preferred_cols if c in df.columns]
+                out_df = df[cols] if cols else df
+
+                f.write(f"### group={grp}\n")
+                out_df.to_csv(f, sep="\t", index=False)
+                f.write("\n")  
+            f.write("\n")      
     potential_gene_set = get_potential_gene_set(
         complete_list,           # Pass the complete list containing DEG results
         adata,                   # Original AnnData object for context
@@ -771,7 +784,6 @@ def get_gene_by_disease(adata, curr_adata, curr_group, cell_types_to_analyze, n_
         n_genes = n_genes
     )
     return potential_gene_set
-
 
 def build_prerank_from_deg(adata, target: str, key_added: str = "rank_genes_groups") -> pd.Series:
 
