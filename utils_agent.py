@@ -638,6 +638,7 @@ def tf_enrichment_from_adata(
         by=["Adjusted P-value", "Combined Score"],
         ascending=[True, False]
     )
+    result.to_csv("enrichment_result_tmp.txt", sep="\t", index=False)
     return result
 
 def merge_deg_summaries(
