@@ -15,6 +15,15 @@ from itertools import product
 import scanpy as sc
 import pandas as pd
 
+# path specification for Human/Mouse
+# TO MODIFY BEFORE USE
+Species = "Mouse" # or "Mouse"
+enrich_kmt_file_map = {
+    "Human" : "/Users/silviachen/Documents/Software/SCAagent/template_code/KEGG_2021_Human.gmt",
+    "Mouse" : "/Users/silviachen/Documents/Software/SCAagent/KEGG_mouse_2019.gmt"
+}
+
+
 def quick_inspect_adata(adata, max_unique=8):
     """
     Quick & compact summary of AnnData.obs for visualization purposes.
@@ -206,19 +215,6 @@ def pca_and_plot_umap(
     sc.tl.umap(adata)
     sc.pl.umap(adata, color="leiden", size=10)
 
-    # Compute UMAP centroids
-    # umap_coords = adata.obsm["X_umap"]
-    # cluster_labels = adata.obs["leiden"]
-
-    # centroids = {}
-    # cluster_sizes = {}
-
-    # for cluster in np.unique(cluster_labels):
-    #     indices = np.where(cluster_labels == cluster)[0]
-    #     cluster_data = umap_coords[indices]
-    #     centroid = cluster_data.mean(axis=0)
-    #     centroids[cluster] = centroid
-    #     cluster_sizes[cluster] = len(indices)
 
 def pca_and_umap_single_run(
     adata, 
@@ -617,9 +613,9 @@ def get_deg_full(
 def tf_enrichment_from_adata(
     adata: sc.AnnData,
     group: Union[str, int],
+    gene_set: str,
+    organism: str,
     top_n: int = 200,
-    gene_set: str = "KEGG_2021_Human",
-    organism: str = "Human",
     outdir: str = "tf_enrichr_results",
 ) -> pd.DataFrame:
     # Extract top genes from adata
@@ -629,7 +625,7 @@ def tf_enrichment_from_adata(
     # Run enrichr with DoRothEA
     enr = gp.enrichr(
         gene_list=genes,
-        gene_sets="/Users/silviachen/Documents/Software/SCAagent/template_code/KEGG_2021_Human.gmt",
+        gene_sets=gene_set,
         organism=organism,
         outdir=outdir,
         cutoff=0.5  # minimum combined score
@@ -638,7 +634,6 @@ def tf_enrichment_from_adata(
         by=["Adjusted P-value", "Combined Score"],
         ascending=[True, False]
     )
-    result.to_csv("enrichment_result_tmp.txt", sep="\t", index=False)
     return result
 
 def merge_deg_summaries(
@@ -678,7 +673,7 @@ def collect_tf_enrichment_details(
     control_type: str,
     group,
     n_genes,
-    gene_set: str = "KEGG_2021_Human"
+    species = Species
 ) -> Dict[str, List[Dict[str, float]]]:
     """
     For selected clusters, runs TF enrichment and collects top 3 terms with gene associations.
@@ -706,7 +701,9 @@ def collect_tf_enrichment_details(
     # Check if this cluster corresponds to a target cell type
 
     # Run enrichment
-    tf_result = tf_enrichment_from_adata(adata, group=group, gene_set=gene_set)
+    gene_set = enrich_kmt_file_map[species]
+    tf_result = tf_enrichment_from_adata(adata, group=group, gene_set=gene_set, organism = species)
+    print(tf_result)
     top_rows = tf_result.iloc[:10]
 
     for _, row in top_rows.iterrows():
@@ -741,6 +738,7 @@ def merge_deg_tf_overlap(deg_dict: dict, tf_dict: dict) -> dict:
 def get_potential_gene_set(complete_list, adata, cell_types_to_analyze, group, control_type, n_genes):
     merged_dict = merge_deg_summaries(complete_list, cell_types_to_analyze)
     result = collect_tf_enrichment_details(adata, control_type, group, n_genes = n_genes)
+    print(result)
     merged_results = merge_deg_tf_overlap(deg_dict=merged_dict, tf_dict=result)
     print("Current Group:" + str(group))
     print(merged_results)
@@ -786,6 +784,7 @@ def get_gene_by_disease(adata, curr_adata, curr_group, cell_types_to_analyze, n_
     )
     return potential_gene_set
 
+
 def build_prerank_from_deg(adata, target: str, key_added: str = "rank_genes_groups") -> pd.Series:
 
     rg = adata.uns.get(key_added, None)
@@ -804,33 +803,3 @@ def build_prerank_from_deg(adata, target: str, key_added: str = "rank_genes_grou
     vals = vals.replace([np.inf, -np.inf], np.nan).fillna(0.0)
     return vals.sort_values(ascending=False)
 
-import gseapy as gp
-import os
-
-def gsea_with_existing_deg(
-    adata,
-    target: str,                     
-    key_added: str = "rank_genes_groups",
-    gene_sets: str | list | dict = "MSigDB_Hallmark_2020", 
-    outdir: str = "gsea_out",
-    permutation_num: int = 1000,
-    processes: int = 4,
-    seed: int = 0,
-    figure_format: str = "png",
-):
-    rnk = build_prerank_from_deg(adata, target=target, key_added=key_added)
-    subdir = os.path.join(outdir, f"{key_added}_{target}")
-    os.makedirs(subdir, exist_ok=True)
-
-    res = gp.prerank(
-        rnk=rnk,
-        gene_sets=gene_sets,
-        permutation_num=permutation_num,
-        processes=processes,
-        outdir=subdir,
-        seed=seed,
-        format=figure_format,
-        no_plot=False,
-        verbose=True,
-    )
-    return res.res2d.sort_values("nes", ascending=False), res._outdir
