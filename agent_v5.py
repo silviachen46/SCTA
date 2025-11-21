@@ -1,19 +1,18 @@
 import uuid
 from call_gpt import OpenAiClient
-from executenote import extract_python_code, execute_code_in_notebook, read_last_result
+from executenote import extract_python_code, execute_code_in_notebook, read_last_n_results
 # define your load context here
 
 ### everything to replace starts here
-
-BIOLOGICAL_CONTEXT = "replace with 2 ~ 3 sentence description of the dataset"
-
+TIME_AWARE = False
+BIOLOGICAL_CONTEXT = """This study is on sample with patients with COVID-19, Flu, and healthy controls."""
 #"""This dataset comprises single-cell data of human prostate adenocarcinoma samples, including both tumor and benign tissues."""
 
-TEST_FILE_NAME = "output_path"##"template_code/tumor_v4agent_test3.ipynb"
+TEST_FILE_NAME = "covid_test_agent.ipynb"##"template_code/tumor_v4agent_test3.ipynb"
 
-GLOBAL_RESULT = "graph_result" #"template_code/tumor_graph_results1.txt"
+GLOBAL_RESULT = "graph_result1.txt" #"template_code/tumor_graph_results1.txt"
 
-ADATA_SOURCE_PATH = "sample.h5ad" #"template_code/tumor_adata.h5ad"
+ADATA_SOURCE_PATH = "/Users/silviachen/Documents/Software/new_sca_agent/SCAagent/covid_adata.h5ad" #"template_code/tumor_adata.h5ad"
 
 ### everything to replace ends here
 
@@ -25,6 +24,8 @@ VISUALIZE_ROLE_PROMPT = """You generate insightful plots and visual representati
 INSIGHT_ROLE_PROMPT = """You analyze processed and visualized data to extract meaningful biological or statistical insights."""
 
 ANNOTATE_ROLE_PROMPT = """You assign biological interpretations or cell type labels based on gene expression and reference knowledge."""
+
+TIME_AWARE_ROLE_PROMPT = """You are a time-aware agent grouping and provide timewise insights."""
 
 RESULT_ROLE_PROMPT = """You compile outputs from all previous agents and generate a final, structured report for the user."""
 
@@ -74,14 +75,16 @@ ANNOTATE_TOOL = """
 import the functions you need from utils_agent.
 functions that would return an updated version of adata would have  -> return adata at the end.
 def assign_cell_categories(adata, cluster_to_category = None) -> return adata
+def assign_cell_subtype(adata, cluster_to_subtype = None) -> return None
 def quick_inspect_adata(adata, max_unique=8)
+def annotate_with_celltypist(adata, model_path = 'Immune_All_Low.pkl') -> return None
 """
 ANNOTATE_TASK_PROMPT = """
 Task Description:
 You are to write python code to:
 LOAD your adata from adata_preprocessed.h5ad in current folder
 based on the top-expressed genes in each cluster and the biological context of the data, analyze which cell types does each cluster represent.
-You should try to annotate with more general cell types, aiming around 6 ~ 9 cell types.
+Please annotate the cells with major lineages, aiming for a coarse-level classification (around 6 ~ 10 broad cell types).
 based on your analysis, define a python dictionary in the following format:
 cluster_to_category = {{
         "0": "cell_type",
@@ -90,6 +93,9 @@ cluster_to_category = {{
         "3": "cell_type" }}
 and inject it as param to the given function to assign categories.
 use pd.crosstab(adata.obs["cell_category"], adata.obs["group"]) to show some insights for further analysis
+according to your major lineage identification, also identify subtypes based on the deg analysis and put it in similar format into a dictionary named cluster_to_subtype.
+assign subtype using the corresponding function given.
+also call given celltypist annotate function to assign label
 SAVE your adata locally to current folder named as adata_annotated.h5ad
 I will use this regex to match the code. Generate python code following this patter: pattern = r"```python\n(.*?)\n```"
 
@@ -123,6 +129,9 @@ INSIGHT_TASK_PROMPT = """
 Task Description:
 You are to write python code to:
 load your data from adata_annotated.h5ad in current folder
+remove potential logging by 
+"import logging
+logging.getLogger('fontTools.subset').setLevel(logging.ERROR)"
 use your result from last step of pd.crosstab(adata.obs["cell_category"], adata.obs["group"]) and biological context below to figure out which cell types are worth further analysis, give a python list of their names.
 biological_context:
 {biological_context}
@@ -138,9 +147,21 @@ Here is the set of functions available for you to use. You should use functions 
 {functions}
 """
 
+TIME_AWARE_TOOL = """
+def deg_for_time_series(adata, time_groups, sample_group_col="sample_group", k=10) -> return results
+"""
+
+TIME_AWARE_TASK_PROMPT = """
+Previous Results: {result}
+Given previous results, first group each sample group according to time range into a list of lists according to time order named input_list.
+Example: input_list = [["time1-disease1", "time2-disease1"], ["time1-disease2", "time2-disease2"]]
+use the given function get a insights into timewise changes.
+"""
+
 RESULT_TASK_PROMPT = """
 Given all the above results, compile a comprehensive report summarizing the key findings and the possible target genes from the result. 
 Make sure to reference to the actual numbers when naming target genes and show your reasoning. You should filter through the results to identify genes that are most likely to be the target.
+For each of these potential target gene choice you are also provided with top frequent subtypes and groups marked with CellTypist as reference for your judgements.
 Also reference to the biological context: {bio_context}
 Results from DEG for individual cell groups:
 {results}
@@ -234,9 +255,24 @@ class InsightAgent(AgentBase):
         self.results.append(result)
         return result
 
+class TimeAwareAgent(AgentBase):
+    def run(self, global_context=None):
+        with open(GLOBAL_RESULT, "r", encoding="utf-8") as f:
+            result = f.read()
+        self.task_prompt = self.task_prompt.format(functions=self.tool_prompt, result = result)
+        current_code = extract_python_code(self.client.call_openai_gpt(self.task_prompt, sys_prompt=self.role_prompt))
+        self.codes.append(current_code)
+        result = execute_code_in_notebook(TEST_FILE_NAME, current_code)
+        result["task_desc"] = self.task_prompt
+        self.results.append(result)
+        return result
+
 class ResultAgent(AgentBase):
     def run(self, global_context=None):
-        last_result = read_last_result(GLOBAL_RESULT)
+        if TIME_AWARE:
+            last_result = read_last_n_results(filepath=GLOBAL_RESULT, n = 2) # we wanna also include the timewise comparison if set to timeaware
+        else:
+            last_result = read_last_n_results(filepath=GLOBAL_RESULT, n = 1)
         self.task_prompt = self.task_prompt.format(results=last_result, bio_context = BIOLOGICAL_CONTEXT)
         result = self.client.call_openai_gpt(self.task_prompt, sys_prompt=self.role_prompt)
         return {"code_state": "Success", "code_result": result, "code_error": None}
@@ -286,6 +322,7 @@ class AgentGraph:
         self.annotate = AgentNode(AnnotationAgent(role_prompt=ANNOTATE_ROLE_PROMPT, tool_prompt=ANNOTATE_TOOL, task_prompt=ANNOTATE_TASK_PROMPT), name="Annotation")
         self.result = AgentNode(ResultAgent(role_prompt=RESULT_ROLE_PROMPT, task_prompt= RESULT_TASK_PROMPT), name="Result")
         self.debugger = AgentNode(DebugAgent(role_prompt=DEBUG_ROLE_PROMPT, task_prompt = DEBUG_TASK_PROMPT), name="Debug")
+        self.timewise = AgentNode(TimeAwareAgent(role_prompt=TIME_AWARE_ROLE_PROMPT, task_prompt=TIME_AWARE_TASK_PROMPT), name = "TimeAware")
         self.global_context = None
         self.graph_results = []
         self.graph_codes = []
@@ -334,14 +371,23 @@ class PlanningAgent(AgentBase):
         self.graph.add_node("Preprocessing", self.graph.preprocess)
         self.graph.add_node("Annotation", self.graph.annotate)
         self.graph.add_node("Insight", self.graph.insight)
+        self.graph.add_node("TimeAware", self.graph.result)
         self.graph.add_node("Result", self.graph.result)
-
-        self.graph.execution_order = [
+        if TIME_AWARE:
+            self.graph.execution_order = [
             "Preprocessing",
             "Annotation",
-            "Insight",        
+            "Insight", 
+            "TimeAware",       
             "Result"
-        ]
+            ]
+        else:
+            self.graph.execution_order = [
+                "Preprocessing",
+                "Annotation",
+                "Insight",        
+                "Result"
+            ]
 
 # result 格式 is specified in execute in notebook
 # attach task descirption to what is being returned

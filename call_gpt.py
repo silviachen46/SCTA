@@ -1,4 +1,4 @@
-from openai import AzureOpenAI
+from openai import AzureOpenAI, OpenAI
 from pydantic import BaseModel
 
 CODE_INDUCER = """
@@ -9,12 +9,15 @@ your code:
 
 # Azure OpenAI client setup
 class OpenAiClient:
-    def __init__(self):
-        self.client = AzureOpenAI(
-            api_key="api_key_here",
-            api_version="2024-08-01-preview",
-            azure_endpoint="endpoint_url"
-        )
+    def __init__(self, client_type = "Azure"):
+        if client_type == "GPT":
+            self.client = OpenAI(api_key="api-key")
+        else:
+            self.client = AzureOpenAI(
+                api_key="api_key_here",
+                api_version="2024-08-01-preview",
+                azure_endpoint="endpoint_url"
+            )
 
     def call_openai_gpt(self, prompt, sys_prompt=None):
         if sys_prompt is None:

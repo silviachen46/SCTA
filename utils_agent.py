@@ -10,16 +10,20 @@ from anndata import ImplicitModificationWarning
 import seaborn as sns
 from sklearn.metrics import adjusted_rand_score
 from itertools import product
+import celltypist
+import scanpy as sc
 # load and mark
 
 import scanpy as sc
 import pandas as pd
 
+
+
 # path specification for Human/Mouse
 # TO MODIFY BEFORE USE
 Species = "Mouse" # or "Mouse"
 enrich_kmt_file_map = {
-    "Human" : "/Users/silviachen/Documents/Software/SCAagent/template_code/KEGG_2021_Human.gmt",
+    "Human" : "/Users/silviachen/Documents/Software/new_sca_agent/SCAagent/KEGG_2021_Human.gmt",
     "Mouse" : "/Users/silviachen/Documents/Software/SCAagent/KEGG_mouse_2019.gmt"
 }
 
@@ -47,12 +51,29 @@ def quick_inspect_adata(adata, max_unique=8):
             print(f"[NUM] {col} (range={s.min():.2f} ~ {s.max():.2f})")
     print("=======================================")
 
-def assign_cell_categories(adata, cluster_to_category = None):
-    """
-    we use agent to analyze the top expressed gene above and give annotation for each of these clusters
-    """
-    adata.obs['cell_category'] = adata.obs['leiden'].map(cluster_to_category).fillna("Unknown")
+def assign_cell_categories(adata, cluster_to_category=None):
+    # ensure leiden column is string (not categorical)
+    adata.obs['leiden'] = adata.obs['leiden'].astype(str)
+
+    # map cluster to category
+    mapped = adata.obs['leiden'].map(cluster_to_category)
+
+    # safe fillna
+    adata.obs['cell_category'] = mapped.fillna("Unknown").astype(str)
+
     return adata
+
+def assign_cell_subtype(adata, cluster_to_subtype=None):
+    # ensure leiden column is string (not categorical)
+    adata.obs['leiden'] = adata.obs['leiden'].astype(str)
+
+    # map cluster to category
+    mapped = adata.obs['leiden'].map(cluster_to_subtype)
+
+    # safe fillna
+    adata.obs['subtype'] = mapped.fillna("Unknown").astype(str)
+
+
 
 def load_and_annotate_adata(path="./"):
     """
@@ -725,11 +746,41 @@ def collect_tf_enrichment_details(
 
     return final_result
 
-def merge_deg_tf_overlap(deg_dict: dict, tf_dict: dict) -> dict:
+def topk_freq_group(adata, gene, k=5, col="subtype"):
+
+    if gene not in adata.var_names:
+        raise ValueError(f"{gene} not found in adata.var_names")
+
+    # Gene expression vector
+    expr = adata[:, gene].X
+    try:
+        expr = expr.toarray().flatten()
+    except:
+        expr = expr.flatten()
+
+    # Construct DataFrame for grouping
+    df = adata.obs.copy()
+    df["expr"] = expr > 0  # binary expression
+
+    # Calculate freq per subtype
+    freq = df.groupby(col)["expr"].mean().sort_values(ascending=False)
+
+    # Take top-k
+    topk = freq.head(k)
+    result = {
+        f"top_{col}": k,
+        "values": {sub: round(float(v), 4) for sub, v in topk.items()},
+    }
+
+    return result
+
+def merge_deg_tf_overlap(adata, deg_dict: dict, tf_dict: dict) -> dict:
     merged = {}
     for gene in deg_dict:
         if gene in tf_dict:
             merged[gene] = {
+                "celltypist" : topk_freq_group(adata, gene, col = "celltypist_major"),
+                "subtype": topk_freq_group(adata, gene, col = "subtype"),
                 "DEG": deg_dict[gene],
                 "TF enrichment": tf_dict[gene]
             }
@@ -738,13 +789,12 @@ def merge_deg_tf_overlap(deg_dict: dict, tf_dict: dict) -> dict:
 def get_potential_gene_set(complete_list, adata, cell_types_to_analyze, group, control_type, n_genes):
     merged_dict = merge_deg_summaries(complete_list, cell_types_to_analyze)
     result = collect_tf_enrichment_details(adata, control_type, group, n_genes = n_genes)
-    print(result)
-    merged_results = merge_deg_tf_overlap(deg_dict=merged_dict, tf_dict=result)
+    merged_results = merge_deg_tf_overlap(adata, deg_dict=merged_dict, tf_dict=result)
     print("Current Group:" + str(group))
     print(merged_results)
     return merged_results
 
-def get_gene_by_disease(adata, curr_adata, curr_group, cell_types_to_analyze, n_genes, control_type):
+def get_gene_by_disease(adata, curr_adata, curr_group, cell_types_to_analyze, control_type, n_genes = 300):
     complete_list = []
     for cell_type in cell_types_to_analyze:
         adata_temp = curr_adata[curr_adata.obs['cell_category'] == cell_type].copy()
@@ -803,3 +853,52 @@ def build_prerank_from_deg(adata, target: str, key_added: str = "rank_genes_grou
     vals = vals.replace([np.inf, -np.inf], np.nan).fillna(0.0)
     return vals.sort_values(ascending=False)
 
+def annotate_with_celltypist(adata, model_path = 'Immune_All_Low.pkl'):
+    pred = celltypist.annotate(adata, model=model_path, majority_voting=True)
+    adata.obs['celltypist_major'] = pred.predicted_labels.iloc[:, 0].astype(str)
+
+
+def deg_for_time_series(adata, time_groups, sample_group_col="sample_group", k=10):
+    """
+    time_groups: list of lists, already sorted by time.
+        Example: [["t1-disease1", "t2-disease1"],
+                  ["t1-disease2", "t2-disease2", "t3-disease2"]]
+
+    For each disease (each sublist), compare adjacent timepoints,
+    and return top-k up/down genes.
+    """
+
+    all_results = {}
+
+    for series in time_groups:
+        # Each series is one disease/time trajectory
+        series_results = {}
+
+        # Pairwise comparison: (t1→t2), (t2→t3), ...
+        for i in range(len(series) - 1):
+            g1 = series[i]
+            g2 = series[i + 1]
+
+            # subset the data to only these two groups
+            adata_sub = adata[adata.obs[sample_group_col].isin([g1, g2])].copy()
+            adata_sub.obs["tmp_group"] = adata_sub.obs[sample_group_col].astype(str)
+
+            # Run DEG: reference = earlier timepoint
+            sc.tl.rank_genes_groups(adata_sub, groupby="tmp_group", reference=g1, method="wilcoxon")
+
+            deg = sc.get.rank_genes_groups_df(adata_sub, group=g2)
+
+            # top-k by logfold (positive = up-regulated)
+            up = deg.sort_values("logfoldchanges", ascending=False).head(k)
+            down = deg.sort_values("logfoldchanges").head(k)
+
+            pair_key = f"{g1} → {g2}"
+            series_results[pair_key] = {
+                "up_genes": up[["names", "logfoldchanges", "pvals_adj"]].to_dict(orient="records"),
+                "down_genes": down[["names", "logfoldchanges", "pvals_adj"]].to_dict(orient="records"),
+            }
+
+        # Add to main dictionary
+        all_results[series[0].split("-")[-1]] = series_results  # group by disease name
+
+    return all_results

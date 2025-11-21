@@ -45,9 +45,7 @@ def execute_code_in_notebook(notebook_path: str, code: str):
         "%reset -f\n"  # 
         "import psutil\n"
         "process = psutil.Process()\n"
-        "print(f'SCA_AGENT_MEMORY_BEFORE: {process.memory_info().rss}')\n"
         f"{code}\n"
-        "print(f'SCA_AGENT_MEMORY_AFTER: {process.memory_info().rss}')\n"
     )
     
   
@@ -165,4 +163,39 @@ def read_last_result(filepath: str) -> str:
 
     # Reverse the collected block to correct order
     return "".join(reversed(last_block))
-    
+
+def read_last_n_results(filepath: str, n: int = 1) -> str:
+    """
+    Read the last N 'Step X Result' blocks from the result file.
+    Blocks are returned in original order (oldest to newest).
+    """
+    with open(filepath, "r", encoding="utf-8") as f:
+        lines = f.readlines()
+
+    blocks = []
+    current_block = []
+
+    # Iterate backwards
+    for line in reversed(lines):
+        current_block.append(line)
+
+        # Identify a block start
+        if line.startswith("Step ") and "Result" in line:
+            # Save completed block
+            blocks.append(list(reversed(current_block)))
+            current_block = []
+
+            if len(blocks) == n:
+                break
+
+    # If fewer than n blocks found
+    if not blocks:
+        return ""
+
+    # Flatten blocks into a string in original order
+    output = []
+    for block in reversed(blocks):
+        output.extend(block)
+
+    return "".join(output)
+
