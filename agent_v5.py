@@ -1,6 +1,9 @@
 import uuid
-from call_gpt import OpenAiClient
+from call_gpt import OpenAiClient, GeneSelection
 from executenote import extract_python_code, execute_code_in_notebook, read_last_n_results
+from utils_agent import fetch_string_neighbors_clean, fetch_gene_summary
+import json
+import os
 # define your load context here
 
 ### everything to replace starts here
@@ -28,6 +31,8 @@ ANNOTATE_ROLE_PROMPT = """You assign biological interpretations or cell type lab
 TIME_AWARE_ROLE_PROMPT = """You are a time-aware agent grouping and provide timewise insights."""
 
 RESULT_ROLE_PROMPT = """You compile outputs from all previous agents and generate a final, structured report for the user."""
+
+FILTER_ROLE_PROMPT = """You should pick genes from the given dictionary to further investigate them."""
 
 REVIEW_ROLE_PROMPT = """You should give review for the current results with respect to its biological context"""
 
@@ -121,8 +126,9 @@ def get_deg_full(
     key_added: str = "rank_genes_groups",
     n_genes : int = 300
 ) -> dict[str, pd.DataFrame]
-def get_gene_by_disease(adata, curr_adata, curr_group, cell_types_to_analyze, n_genes = 300, control_type="Ctl")
+def get_gene_by_disease(adata, curr_adata, curr_group, cell_types_to_analyze, n_genes = 300, control_type="Ctl") -> Dictionary
 The default value for n_genes is 300, you should decide what specific value to use based on the adata info.
+def get_filtered_gene_list(adata, gene_list) -> List
 """
 ## insight is changed
 INSIGHT_TASK_PROMPT = """
@@ -138,9 +144,11 @@ biological_context:
 result:
 {result}
 Based on former result, first figure out different types of disease subtype to study here (everything other than Control or Normal group) for e.g. to_study = ["a", "b", "c"]
-save a copy for each of their adata with the control type: adata_a = adata[adata.obs['group'].isin(['control_type', 'a'])].copy() for each of the disease subtype. You should adjust control_type name as given.
+Save a copy for each of their adata with the control type: adata_a = adata[adata.obs['group'].isin(['control_type', 'a'])].copy() for each of the disease subtype. You should adjust control_type name as given.
 Now for each of these sub adata using something like for curr_adata, curr_group in zip([adata_a, adata_b], ["a", "b"]): , 
-get potential gene set for each disease type using the function provided with adata(the original one), curr_adata, curr_group, cell_types_to_analyze, and the control_type name in current dataset.
+Get potential gene set for each disease type using the function provided with adata(the original one), curr_adata, curr_group, cell_types_to_analyze, and the control_type name in current dataset, store the output in variable potential_gene_set.
+Filter the gene set with given function, which accepts a list of gene symbols(keys of the gene dictionary) and return a list of filtered gene symbols. You should filter the dictionary and only keep those present in list.
+Print the current group name along with the filtered potentail gene dictionary, switch line everytime.
 I will use this regex to match the code. Generate python code following this patter: pattern = r"```python\n(.*?)\n```"
 
 Here is the set of functions available for you to use. You should use functions whenever possible:
@@ -152,11 +160,28 @@ def deg_for_time_series(adata, time_groups, sample_group_col="sample_group", k=1
 """
 
 TIME_AWARE_TASK_PROMPT = """
-Previous Results: {result}
 Given previous results, first group each sample group according to time range into a list of lists according to time order named input_list.
 Example: input_list = [["time1-disease1", "time2-disease1"], ["time1-disease2", "time2-disease2"]]
 use the given function get a insights into timewise changes.
 """
+
+# if time aware merge this prompt into insight agent prompt
+if TIME_AWARE:
+    INSIGHT_TASK_PROMPT = INSIGHT_TASK_PROMPT + "\n" + TIME_AWARE_TASK_PROMPT
+    INSIGHT_TOOL = INSIGHT_TOOL + "\n" + TIME_AWARE_TOOL
+
+
+# batch filtering
+FILTER_TASK_PROMPT = """
+You are given biological background knowledge, protein interaction context, and DEG&TF enrichment info. 
+You should decide which genes in given gene set to keep for biologist to investigate as potentail novel target for given disease context.
+You should return a list of selected gene and give reasoning for your selection.
+Disease biological context: {bio_context}
+Detailed information on each genes:
+{gene_info}
+"""
+
+# replace result agent with filter agent
 
 RESULT_TASK_PROMPT = """
 Given all the above results, compile a comprehensive report summarizing the key findings and the possible target genes from the result. 
@@ -269,13 +294,190 @@ class TimeAwareAgent(AgentBase):
 
 class ResultAgent(AgentBase):
     def run(self, global_context=None):
-        if TIME_AWARE:
-            last_result = read_last_n_results(filepath=GLOBAL_RESULT, n = 2) # we wanna also include the timewise comparison if set to timeaware
-        else:
-            last_result = read_last_n_results(filepath=GLOBAL_RESULT, n = 1)
+        # if TIME_AWARE:
+        #     last_result = read_last_n_results(filepath=GLOBAL_RESULT, n = 2) # we wanna also include the timewise comparison if set to timeaware
+        # else:
+        last_result = read_last_n_results(filepath=GLOBAL_RESULT, n = 1)
         self.task_prompt = self.task_prompt.format(results=last_result, bio_context = BIOLOGICAL_CONTEXT)
         result = self.client.call_openai_gpt(self.task_prompt, sys_prompt=self.role_prompt)
         return {"code_state": "Success", "code_result": result, "code_error": None}
+
+# filter agent runs batch filtering until we get ideal amount of target genes
+class FilterAgent(AgentBase):
+    def run(self, global_context=None, batch_size=5, target_gene_number=5):
+
+        # folder where all potential gene sets are stored
+        folder_path = os.path.join(os.getcwd(), "potential_gene_set")
+
+        if not os.path.exists(folder_path):
+            return {
+                "code_state": "Failed",
+                "code_error": "potential_gene_set folder not found",
+                "code_result": None
+            }
+
+        # list all JSON files inside potential_gene_set/
+        json_files = [f for f in os.listdir(folder_path) if f.endswith(".json")]
+
+        # extract group names from filenames
+        group_list = [os.path.splitext(f)[0] for f in json_files]
+
+        # process each group
+        for group in group_list:
+            print(f"🔍 Processing group = {group}")
+            self.single_filter_target(group, batch_size, target_gene_number)
+
+        return {"code_state": "Success", "code_error": None, "code_result": f"Processed groups: {group_list}"}
+
+    def single_filter_target(self, curr_group, batch_size=5, target_gene_number=5):
+
+        # --------------------------
+        # Load correct JSON file
+        # --------------------------
+        potential_folder = os.path.join(os.getcwd(), "potential_gene_set")
+        potential_file = os.path.join(potential_folder, f"{curr_group}.json")
+
+        if not os.path.exists(potential_file):
+            print(f"⚠️ WARNING: {potential_file} not found. Skip group.")
+            return
+
+        with open(potential_file, "r", encoding="utf-8") as f:
+            potential_gene_set = json.load(f)
+
+        gene_search_list = sorted(list(potential_gene_set.keys()))
+
+        # --------------------------
+        # Prepare result folder
+        # --------------------------
+        result_folder = os.path.join(os.getcwd(), "result_gene")
+        os.makedirs(result_folder, exist_ok=True)
+
+        # result file
+        result_file = os.path.join(result_folder, f"result_{curr_group}.json")
+
+        # initialize empty result JSON
+        with open(result_file, "w", encoding="utf-8") as f:
+            json.dump({}, f, indent=4)
+
+        ptr = 0
+
+        # --------------------------
+        # Main filtering loop
+        # --------------------------
+        while True:
+            with open(result_file, "r", encoding="utf-8") as f:
+                data = json.load(f)
+
+            if len(data) >= target_gene_number:
+                break
+
+            gene_info = ""
+            tmp_gene_info = {}
+
+            for i in range(ptr, min(ptr + batch_size, len(gene_search_list))):
+                curr_gene = gene_search_list[i]
+                curr_gene_deg = potential_gene_set[curr_gene]
+                curr_gene_neighbor = fetch_string_neighbors_clean(curr_gene)
+                curr_gene_context = fetch_gene_summary(curr_gene)
+
+                tmp_gene_info[curr_gene] = {
+                    "deg": curr_gene_deg,
+                    "neighbor": curr_gene_neighbor,
+                    "context": curr_gene_context
+                }
+
+                curr_gene_info = (
+                    curr_gene + "\n" +
+                    str(curr_gene_deg) + "\n" +
+                    str(curr_gene_context) + "\n" +
+                    str(curr_gene_neighbor)
+                )
+
+                if gene_info:
+                    gene_info += "\n" + curr_gene_info
+                else:
+                    gene_info = curr_gene_info
+
+            # ------------ LLM call ------------
+            base_prompt = self.task_prompt
+            formatted_prompt = base_prompt.format(
+                bio_context=BIOLOGICAL_CONTEXT,
+                gene_info=gene_info
+            )
+            result = self.client.gpt_parsed_call(prompt=formatted_prompt, format=GeneSelection)
+            print("LLM result:", result)
+
+            # update result JSON safely
+            for selected_gene in result["selected"]:
+                if selected_gene in tmp_gene_info:
+                    data[selected_gene] = tmp_gene_info[selected_gene]
+                    data[selected_gene]["reasoning"] = result["reasoning"]
+                else:
+                    print(f"⚠ LLM selected gene not in batch: {selected_gene}")
+
+            with open(result_file, "w", encoding="utf-8") as f:
+                json.dump(data, f, indent=4)
+            # move pointer
+            ptr += min(batch_size, len(gene_search_list) - ptr)
+            if ptr >= len(gene_search_list):
+                break
+
+        print(f"✅ Finished group {curr_group}")
+        return
+
+    # def single_filter_target(self, group, batch_size, target_gene_number):
+    #     # read from a json file to check if we have enough target gene
+    #     # for each key(gene symbol) prepare the bio info
+    #     with open("results.json", "w", encoding="utf-8") as f:
+    #         json.dump({}, f, indent=4)
+    #     with open("potential_gene_set.json", "r", encoding="utf-8") as f:
+    #         potential_gene_set = json.load(f)
+    #     gene_search_list = sorted(list(potential_gene_set.keys()))
+    #     ptr = 0
+        
+        
+
+    #     while True:
+    #         with open("results.json", "r", encoding="utf-8") as f:
+    #             data = json.load(f)
+
+    #         if len(data) >= target_gene_number:
+    #             break
+
+    #         gene_info = ""
+    #         tmp_gene_info = {}
+    #         # prepare gene_info, process it in sequence
+    #         for i in range(ptr, min(ptr + batch_size, len(gene_search_list))):
+    #             curr_gene = gene_search_list[i]
+    #             curr_gene_deg = potential_gene_set[curr_gene]
+    #             curr_gene_neighbor = fetch_string_neighbors_clean(curr_gene)
+    #             curr_gene_context = fetch_gene_summary(curr_gene)
+    #             tmp_gene_info[curr_gene] = {
+    #                 "deg": curr_gene_deg,
+    #                 "neighbor": curr_gene_neighbor,
+    #                 "context": curr_gene_context
+    #             }
+    #             curr_gene_info = curr_gene + "\n" + str(curr_gene_deg) + "\n" + str(curr_gene_context) + "\n" + str(curr_gene_neighbor)
+    #             if gene_info:
+    #                 gene_info += "\n" + curr_gene_info
+    #             else:
+    #                 gene_info += curr_gene_info
+
+    #         base_prompt = self.task_prompt
+    #         formatted_prompt = base_prompt.format(bio_context = BIOLOGICAL_CONTEXT, gene_info = gene_info)
+    #         result = self.client.gpt_parsed_call(prompt = formatted_prompt, format = GeneSelection)
+    #         print(result)
+    #         # print(result["reasoning"])
+    #         ptr += min(batch_size, len(gene_search_list) - ptr)
+    #         if ptr >= len(gene_search_list):
+    #             break
+    #         for selected_gene in result["selected"]:
+    #             data[selected_gene] = tmp_gene_info[selected_gene]
+
+    #         with open("results.json", "w", encoding="utf-8") as f:
+    #             json.dump(data, f, indent=4) # additional data
+        
+
 
 class DebugAgent(AgentBase):
     def fix(self, max_retry, task_desc, wrong_code, error_trace):
@@ -320,9 +522,10 @@ class AgentGraph:
         # self.visualize = AgentNode(VisualizationAgent(role_prompt=VISUALIZE_ROLE_PROMPT),name="Visualization")
         self.insight = AgentNode(InsightAgent(role_prompt=INSIGHT_ROLE_PROMPT, tool_prompt = INSIGHT_TOOL, task_prompt=INSIGHT_TASK_PROMPT), name="Insight")
         self.annotate = AgentNode(AnnotationAgent(role_prompt=ANNOTATE_ROLE_PROMPT, tool_prompt=ANNOTATE_TOOL, task_prompt=ANNOTATE_TASK_PROMPT), name="Annotation")
-        self.result = AgentNode(ResultAgent(role_prompt=RESULT_ROLE_PROMPT, task_prompt= RESULT_TASK_PROMPT), name="Result")
+        # self.result = AgentNode(ResultAgent(role_prompt=RESULT_ROLE_PROMPT, task_prompt= RESULT_TASK_PROMPT), name="Result")
         self.debugger = AgentNode(DebugAgent(role_prompt=DEBUG_ROLE_PROMPT, task_prompt = DEBUG_TASK_PROMPT), name="Debug")
-        self.timewise = AgentNode(TimeAwareAgent(role_prompt=TIME_AWARE_ROLE_PROMPT, task_prompt=TIME_AWARE_TASK_PROMPT), name = "TimeAware")
+        # self.timewise = AgentNode(TimeAwareAgent(role_prompt=TIME_AWARE_ROLE_PROMPT, task_prompt=TIME_AWARE_TASK_PROMPT), name = "TimeAware")
+        self.filterer = AgentNode(FilterAgent(role_prompt=FILTER_ROLE_PROMPT, tool_prompt="", task_prompt=FILTER_TASK_PROMPT), name = "Filterer")
         self.global_context = None
         self.graph_results = []
         self.graph_codes = []
@@ -371,23 +574,17 @@ class PlanningAgent(AgentBase):
         self.graph.add_node("Preprocessing", self.graph.preprocess)
         self.graph.add_node("Annotation", self.graph.annotate)
         self.graph.add_node("Insight", self.graph.insight)
-        self.graph.add_node("TimeAware", self.graph.result)
-        self.graph.add_node("Result", self.graph.result)
-        if TIME_AWARE:
-            self.graph.execution_order = [
+        self.graph.add_node("Filterer", self.graph.filterer)
+        # self.graph.add_node("TimeAware", self.graph.result)
+        # self.graph.add_node("Result", self.graph.result)
+        
+        self.graph.execution_order = [
             "Preprocessing",
             "Annotation",
-            "Insight", 
-            "TimeAware",       
-            "Result"
-            ]
-        else:
-            self.graph.execution_order = [
-                "Preprocessing",
-                "Annotation",
-                "Insight",        
-                "Result"
-            ]
+            "Insight",
+            "Filterer"        
+            # "Result"
+        ]
 
 # result 格式 is specified in execute in notebook
 # attach task descirption to what is being returned

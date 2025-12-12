@@ -1,5 +1,6 @@
 from openai import AzureOpenAI, OpenAI
 from pydantic import BaseModel
+from typing import List
 
 CODE_INDUCER = """
 Return ```python your_code_here ``` with NO other texts. your_code_here is a placeholder.
@@ -45,7 +46,7 @@ class OpenAiClient:
     
     def gpt_parsed_call(self, prompt, format):
         completion = self.client.beta.chat.completions.parse(
-            model="gpt-4o-2024-08-06",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": "You are a reviewer, give review as instructed by the user."},
                 {"role": "user", "content": prompt},
@@ -65,6 +66,11 @@ class GeneralReview(BaseModel):
 
 class Selection(BaseModel):
     selected: str
+
+
+class GeneSelection(BaseModel):
+    selected: List[str]
+    reasoning: str
 
     
     

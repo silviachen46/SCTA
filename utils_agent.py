@@ -12,6 +12,7 @@ from sklearn.metrics import adjusted_rand_score
 from itertools import product
 import celltypist
 import scanpy as sc
+import json
 # load and mark
 
 import scanpy as sc
@@ -790,8 +791,6 @@ def get_potential_gene_set(complete_list, adata, cell_types_to_analyze, group, c
     merged_dict = merge_deg_summaries(complete_list, cell_types_to_analyze)
     result = collect_tf_enrichment_details(adata, control_type, group, n_genes = n_genes)
     merged_results = merge_deg_tf_overlap(adata, deg_dict=merged_dict, tf_dict=result)
-    print("Current Group:" + str(group))
-    print(merged_results)
     return merged_results
 
 def get_gene_by_disease(adata, curr_adata, curr_group, cell_types_to_analyze, control_type, n_genes = 300):
@@ -832,6 +831,19 @@ def get_gene_by_disease(adata, curr_adata, curr_group, cell_types_to_analyze, co
         control_type=control_type,
         n_genes = n_genes
     )
+    # for gene in potential_gene_set.keys():
+    #     potential_gene_set[gene]["ensembl_id"] = adata.var.loc[gene, "gene_ids"]
+    folder_path = os.path.join(os.getcwd(), "potential_gene_set")
+
+    # create folder if not exists
+    os.makedirs(folder_path, exist_ok=True)
+
+    # file name: {curr_group}.json
+    output_path = os.path.join(folder_path, f"{curr_group}.json")
+
+    # write JSON file
+    with open(output_path, "w", encoding="utf-8") as f:
+        json.dump(potential_gene_set, f, ensure_ascii=False, indent=4)
     return potential_gene_set
 
 
@@ -902,3 +914,230 @@ def deg_for_time_series(adata, time_groups, sample_group_col="sample_group", k=1
         all_results[series[0].split("-")[-1]] = series_results  # group by disease name
 
     return all_results
+
+import requests
+from collections import defaultdict
+
+STRING_API = "https://string-db.org/api"
+
+
+def fetch_string_neighbors_clean(gene_symbol, species=9606, limit=50):
+    """
+    Returns a clean dict:
+        { neighbor_gene_symbol : interaction_score }
+    Excludes the query gene and removes duplicates.
+    """
+
+    # 1. String call
+    endpoint = f"{STRING_API}/tsv/network"
+    params = {
+        "identifiers": gene_symbol,
+        "species": species,
+        "limit": limit,
+        "caller_identity": "your_app"
+    }
+
+    r = requests.get(endpoint, params=params)
+    lines = r.text.strip().split("\n")
+
+    if len(lines) < 2:
+        return {}
+
+    # 2. Parse edges
+    edges = []
+    for row in lines[1:]:
+        cols = row.split("\t")
+        edges.append({
+            "protein1": cols[0],
+            "protein2": cols[1],
+            "score": float(cols[5]),
+            "protein1_symbol": cols[2],
+            "protein2_symbol": cols[3]
+        })
+
+    # 3. Identify query protein symbol
+    # STRING returns the symbol in one of the two columns
+    query_symbol = gene_symbol.upper()
+
+    neighbors = {}
+
+    for e in edges:
+        # Find which side is the neighbor
+        if e["protein1_symbol"].upper() == query_symbol:
+            neighbor = e["protein2_symbol"]
+        elif e["protein2_symbol"].upper() == query_symbol:
+            neighbor = e["protein1_symbol"]
+        else:
+            continue  # skip weird edges not involving query gene
+
+        # Skip the query gene itself (just in case)
+        if neighbor.upper() == query_symbol:
+            continue
+
+        # Save highest score for each neighbor (dedup)
+        score = e["score"]
+        if neighbor not in neighbors or score > neighbors[neighbor]:
+            neighbors[neighbor] = score
+
+    return neighbors
+
+
+import requests
+
+def fetch_gene_summary(gene_ensemeble_id):
+    """
+    gene_input: Ensembl ID (e.g., "ENSG00000112367") or gene symbol (e.g., "CCR6")
+    returns: dict containing summary, uniprot info, GO terms, etc.
+    """
+
+    url = "https://mygene.info/v3/query"
+
+    # Accept both symbol and Ensembl ID
+    params = {
+        "q": gene_ensemeble_id,
+        "fields": "summary,uniprot,go.BP",
+        "species": "human"
+    }
+
+    r = requests.get(url, params=params)
+    data = r.json()
+
+    if "hits" not in data or len(data["hits"]) == 0:
+        return {"error": "No gene found"}
+
+    hit = data["hits"][0]
+
+    # ----- Extract summary from NCBI -----
+    summary = hit.get("summary", None)
+
+    # ----- Extract UniProt function text -----
+    uniprot = None
+    if "uniprot" in hit:
+        # UniProt may return dict with 'func' or 'comments'
+        if isinstance(hit["uniprot"], dict):
+            uniprot = hit["uniprot"].get("func") or hit["uniprot"].get("comments")
+
+    # ----- Extract GO Biological Process -----
+    go_terms = set()
+    if "go" in hit and "BP" in hit["go"]:
+        for term in hit["go"]["BP"]:
+            if isinstance(term, dict) and "term" in term:
+                go_terms.add(term["term"])
+            elif isinstance(term, str):
+                go_terms.add(term)
+
+    return {
+        "query": gene_ensemeble_id,
+        "summary": summary,
+        "uniprot_function": uniprot,
+        "go_biological_process": list(go_terms)
+    }
+
+import requests
+
+API_URL = "https://api.platform.opentargets.org/api/v4/graphql"
+
+def fetch_target_data(ensembl_id):
+    query = """
+    query targetQuery($ensembl_id: String!) {
+      target(ensemblId: $ensembl_id) {
+        approvedSymbol
+
+        knownDrugs {
+          rows {
+            phase
+          }
+        }
+
+        associatedDiseases {
+          rows {
+            disease { id name }
+            datasourceScores { id score }
+          }
+        }
+      }
+    }
+    """
+
+    variables = {"ensembl_id": ensembl_id}
+    r = requests.post(API_URL, json={"query": query, "variables": variables})
+    resp = r.json()
+
+    if "errors" in resp:
+        raise ValueError(resp["errors"])
+
+    return resp["data"]["target"]
+
+
+def is_drug_target(ensemble_id):
+    t = fetch_target_data(ensemble_id)
+    reasons = []
+
+    # -----------------------------
+    # 1 — knownDrugs block may be None
+    # -----------------------------
+    known_block = t.get("knownDrugs", {}) or {}
+    known_rows = known_block.get("rows", []) or []
+
+    if len(known_rows) > 0:
+        reasons.append(f"Known drug entries found ({len(known_rows)} entries)")
+        return True, reasons
+
+    # -----------------------------
+    # 2 — associatedDiseases may be None
+    # -----------------------------
+    disease_block = t.get("associatedDiseases", {}) or {}
+    disease_rows = disease_block.get("rows", []) or []
+
+    for row in disease_rows:
+        datasource_list = row.get("datasourceScores", []) or []
+        for ds in datasource_list:
+            if ds.get("id") == "chembl" and ds.get("score", 0) > 0:
+                reasons.append(
+                    f"ChEMBL drug evidence for disease {row['disease']['name']}"
+                )
+                return True, reasons
+
+    # -----------------------------
+    # 3 — No evidence found
+    # -----------------------------
+    reasons.append("No known drugs and no ChEMBL drug evidence")
+    return False, reasons
+
+
+import os
+import json
+
+def get_filtered_gene_list(adata, gene_list):
+    result = []
+
+    output_file = "drug_target_filtered.json"
+
+    # Load existing json if exists
+    if os.path.exists(output_file):
+        with open(output_file, "r", encoding="utf-8") as f:
+            record_dict = json.load(f)
+    else:
+        record_dict = {}
+
+    # Process each gene
+    for gene_symbol in gene_list:
+        ensemble_id = adata.var.loc[gene_symbol, "gene_ids"]
+        is_drug, reasoning = is_drug_target(ensemble_id)
+
+        # (1) Add to return list only if NOT drug target
+        if not is_drug:
+            result.append(gene_symbol)
+
+        # (2) Write to JSON regardless of drug status
+        record_dict[gene_symbol] = {
+            "ensemble_id": ensemble_id,
+            "is_drug_target": is_drug,
+            "reasoning": reasoning if reasoning else ""
+        }
+
+    # Write JSON
+    with open(output_file, "w", encoding="utf-8") as f:
+        json.dump(record_dict, f, indent=4, ensure_ascii=False)
+
+    return result
