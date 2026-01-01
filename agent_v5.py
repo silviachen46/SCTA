@@ -54,6 +54,7 @@ def pca_and_plot_umap(
     resolution=0.7,
 ) -> return None
 def get_top_marker_genes(adata, groupby='leiden', method='wilcoxon', top_n=5) -> return None
+def quick_inspect_adata(adata, max_unique=8)
 """
 
 
@@ -88,6 +89,7 @@ ANNOTATE_TASK_PROMPT = """
 Task Description:
 You are to write python code to:
 LOAD your adata from adata_preprocessed.h5ad in current folder
+if the column name in obs for sample groups is not the required column name "group", rename it to "group" first.
 based on the top-expressed genes in each cluster and the biological context of the data, analyze which cell types does each cluster represent.
 Please annotate the cells with major lineages, aiming for a coarse-level classification (around 6 ~ 10 broad cell types).
 based on your analysis, define a python dictionary in the following format:
