@@ -85,7 +85,6 @@ functions that would return an updated version of adata would have  -> return ad
 def assign_cell_categories(adata, cluster_to_category = None) -> return adata
 def assign_cell_subtype(adata, cluster_to_subtype = None) -> return None
 def quick_inspect_adata(adata, max_unique=8)
-def annotate_with_celltypist(adata, model_path = 'Immune_All_Low.pkl') -> return None
 """
 ANNOTATE_TASK_PROMPT = """
 Task Description:
@@ -104,7 +103,6 @@ and inject it as param to the given function to assign categories.
 use pd.crosstab(adata.obs["cell_category"], adata.obs["group"]) to show some insights for further analysis
 according to your major lineage identification, also identify subtypes based on the deg analysis and put it in similar format into a dictionary named cluster_to_subtype.
 assign subtype using the corresponding function given.
-call given celltypist annotate function to assign label, 
 SAVE your adata locally to current folder named as adata_annotated.h5ad
 I will use this regex to match the code. Generate python code following this patter: pattern = r"```python\n(.*?)\n```"
 
