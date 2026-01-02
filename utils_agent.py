@@ -780,7 +780,6 @@ def merge_deg_tf_overlap(adata, deg_dict: dict, tf_dict: dict) -> dict:
     for gene in deg_dict:
         if gene in tf_dict:
             merged[gene] = {
-                "celltypist" : topk_freq_group(adata, gene, col = "celltypist_major"),
                 "subtype": topk_freq_group(adata, gene, col = "subtype"),
                 "DEG": deg_dict[gene],
                 "TF enrichment": tf_dict[gene]
