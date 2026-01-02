@@ -101,7 +101,7 @@ cluster_to_category = {{
         "3": "cell_type" }}
 and inject it as param to the given function to assign categories.
 use pd.crosstab(adata.obs["cell_category"], adata.obs["group"]) to show some insights for further analysis
-according to your major lineage identification, also identify subtypes based on the deg analysis and put it in similar format into a dictionary named cluster_to_subtype.
+according to your major lineage identification, also identify detailed subtypes based on the deg analysis and put it in similar format into a dictionary named cluster_to_subtype from the first cluster to the last cluster.
 assign subtype using the corresponding function given.
 SAVE your adata locally to current folder named as adata_annotated.h5ad
 I will use this regex to match the code. Generate python code following this patter: pattern = r"```python\n(.*?)\n```"
