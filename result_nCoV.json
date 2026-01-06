@@ -1,0 +1,1008 @@
+{
+    "FOS": {
+        "deg": {
+            "celltypist": {
+                "top_celltypist_major": 5,
+                "values": {
+                    "ELP": 1.0,
+                    "Germinal center B cells": 1.0,
+                    "Early lymphoid/T lymphoid": 1.0,
+                    "ILC precursor": 1.0,
+                    "MNP": 1.0
+                }
+            },
+            "subtype": {
+                "top_subtype": 5,
+                "values": {
+                    "Activated Neutrophil": 0.9292,
+                    "Classical Monocyte": 0.8663,
+                    "Intermediate Monocyte": 0.8427,
+                    "cDCs": 0.7356,
+                    "Plasma B cell": 0.6299
+                }
+            },
+            "DEG": [
+                {
+                    "cell_type": "NK cell",
+                    "pval": 5.560304174118689e-72,
+                    "score": 17.94182014465332,
+                    "logFC": 1.3543058633804321,
+                    "pval_adj": 7.943291677312412e-70
+                },
+                {
+                    "cell_type": "T cell",
+                    "pval": 2.2445495773901834e-54,
+                    "score": 15.527945518493652,
+                    "logFC": 1.7160015106201172,
+                    "pval_adj": 1.1222747886950916e-51
+                }
+            ],
+            "TF enrichment": [
+                {
+                    "Term": "Chagas disease (American trypanosomiasis)",
+                    "adj_pval": 0.003895570841519759
+                },
+                {
+                    "Term": "Apoptosis",
+                    "adj_pval": 0.003895570841519759
+                },
+                {
+                    "Term": "Fluid shear stress and atherosclerosis",
+                    "adj_pval": 0.003895570841519759
+                },
+                {
+                    "Term": "Colorectal cancer",
+                    "adj_pval": 0.004639217106469604
+                },
+                {
+                    "Term": "IL-17 signaling pathway",
+                    "adj_pval": 0.004639217106469604
+                },
+                {
+                    "Term": "Leishmaniasis",
+                    "adj_pval": 0.005261431374460489
+                },
+                {
+                    "Term": "Rheumatoid arthritis",
+                    "adj_pval": 0.013607325097716097
+                },
+                {
+                    "Term": "Pathways in cancer",
+                    "adj_pval": 0.01567489170660479
+                }
+            ]
+        },
+        "neighbor": {
+            "MAPK13": 0.958,
+            "MAPK12": 0.957,
+            "MAPK1": 0.992,
+            "RPS6KB1": 0.946,
+            "SPI1": 0.975,
+            "CCND1": 0.942,
+            "MAPK14": 0.985,
+            "NR3C1": 0.961,
+            "DUSP1": 0.961,
+            "EGR1": 0.995,
+            "EGR2": 0.963,
+            "FOSB": 0.999,
+            "JUND": 0.999,
+            "CREBBP": 0.943,
+            "MAPK3": 0.994,
+            "EP300": 0.964,
+            "ATF2": 0.99,
+            "STAT3": 0.995,
+            "FOSL2": 0.998,
+            "SRF": 0.95,
+            "TP53": 0.952,
+            "EGFR": 0.94,
+            "JUNB": 0.999,
+            "EGR3": 0.941,
+            "CARM1": 0.941,
+            "NFATC1": 0.942,
+            "SP1": 0.944,
+            "PRKCA": 0.946,
+            "NCOA1": 0.949,
+            "PRKACA": 0.959,
+            "PRKACG": 0.959,
+            "PRKACB": 0.959,
+            "MAPK11": 0.96,
+            "ESR2": 0.961,
+            "MYC": 0.965,
+            "NCOA3": 0.97,
+            "SMAD3": 0.976,
+            "MAPK9": 0.977,
+            "MAFB": 0.983,
+            "ATF7": 0.983,
+            "MAPK8": 0.986,
+            "SRC": 0.986,
+            "RUNX2": 0.987,
+            "ATF3": 0.994,
+            "MAF": 0.998,
+            "NFATC2": 0.998,
+            "CREB1": 0.998,
+            "FOSL1": 0.998,
+            "JUN": 0.999,
+            "ESR1": 0.999
+        },
+        "context": {
+            "query": "FOS",
+            "summary": "The Fos gene family consists of 4 members: FOS, FOSB, FOSL1, and FOSL2.  These genes encode leucine zipper proteins that can dimerize with proteins of the JUN family, thereby forming the transcription factor complex AP-1.  As such, the FOS proteins have been implicated as regulators of cell proliferation, differentiation, and transformation.  In some cases, expression of the FOS gene has also been associated with apoptotic cell death. [provided by RefSeq, Jul 2008].",
+            "uniprot_function": null,
+            "go_biological_process": [
+                "cellular response to tumor necrosis factor",
+                "neuron differentiation",
+                "response to light stimulus",
+                "skeletal muscle cell proliferation",
+                "cellular response to prolactin",
+                "conditioned taste aversion",
+                "response to immobilization stress",
+                "response to cytokine",
+                "positive regulation of transcription by RNA polymerase II",
+                "regulation of transcription by RNA polymerase II",
+                "response to insulin",
+                "response to steroid hormone",
+                "positive regulation of miRNA transcription",
+                "response to forskolin",
+                "response to lipopolysaccharide",
+                "skeletal muscle cell differentiation",
+                "cerebral cortex development",
+                "response to mechanical stimulus",
+                "cellular response to hormone stimulus",
+                "cellular response to calcium ion",
+                "response to xenobiotic stimulus",
+                "response to activity",
+                "response to muscle stretch",
+                "cellular response to transforming growth factor beta stimulus",
+                "neural retina development",
+                "cellular response to phorbol 13-acetate 12-myristate",
+                "integrated stress response signaling",
+                "response to ethanol",
+                "SMAD protein signal transduction",
+                "response to progesterone",
+                "transcription by RNA polymerase II",
+                "response to toxic substance",
+                "cellular response to reactive oxygen species",
+                "cellular response to parathyroid hormone stimulus",
+                "response to corticosterone",
+                "cellular response to hypoxia",
+                "medium-term memory",
+                "nervous system development",
+                "response to cAMP",
+                "regulation of DNA-templated transcription",
+                "cellular response to epidermal growth factor stimulus",
+                "inflammatory response",
+                "regulation of gene expression",
+                "positive regulation of DNA-templated transcription",
+                "positive regulation of osteoclast differentiation",
+                "mononuclear cell differentiation",
+                "transforming growth factor beta receptor signaling pathway",
+                "cellular response to zinc ion starvation",
+                "response to gravity",
+                "myoblast proliferation",
+                "female pregnancy"
+            ]
+        },
+        "reasoning": "In selecting genes that could serve as potential novel targets for the disease context of COVID-19, flu, and healthy controls, several factors were considered including the differential expression in relevant cell types, transcription factor enrichment linked to relevant pathways, and biological processes involved:\n\n1. **FOS**: This gene demonstrates significant involvement in immune response pathways, particularly the IL-17 signaling pathway, which is crucial considering its role in the inflammatory response seen in COVID-19. The high log fold change and statistically significant differential expression in NK and T cells, which are pivotal immune cells in viral infections, make FOS a compelling candidate for further investigation.\n\n2. **DDIT3**: Known for its role in apoptosis and response to endoplasmic reticulum stress, DDIT3 is crucial in the context of COVID-19, where cellular stress responses and apoptosis are significant. It also shows strong differential expression in B and NK cells and enrichment in pathways involving apoptosis and stress response.\n\n3. **IL1B**: As a critical component of the cytokine storm observed in severe COVID-19 cases, IL1B stands out due to its role in producing inflammatory responses. It shows high differential expression in monocytes, which are key players in inflammation and immune response dysregulation seen in COVID-19 patients.\n\n4. **DUSP1**: This gene acts as a negative regulator of MAPK pathways, which are critical in controlling inflammation and immune activation. The involvement of DUSP1 in multiple inflammatory and stress-response pathways indicates a potential regulatory role in the excessive inflammatory responses seen in severe COVID-19 cases.\n\nEach chosen gene is involved in pathways or biological processes that are highly relevant to the disease context, whether through direct involvement in immune signaling, regulation of apoptosis, or inflammatory responses, making them strong candidates for further investigation."
+    },
+    "DDIT3": {
+        "deg": {
+            "celltypist": {
+                "top_celltypist_major": 5,
+                "values": {
+                    "Treg(diff)": 1.0,
+                    "Germinal center B cells": 1.0,
+                    "NKT cells": 0.6667,
+                    "Intestinal macrophages": 0.6154,
+                    "MNP": 0.5
+                }
+            },
+            "subtype": {
+                "top_subtype": 5,
+                "values": {
+                    "Plasma B cell": 0.4935,
+                    "Proliferating Myeloid": 0.4926,
+                    "cDCs": 0.4068,
+                    "Memory B cell": 0.3884,
+                    "Naive B cell": 0.369
+                }
+            },
+            "DEG": [
+                {
+                    "cell_type": "B cell",
+                    "pval": 1.8367596711620107e-19,
+                    "score": 9.022601127624512,
+                    "logFC": 0.885923445224762,
+                    "pval_adj": 3.866862465604233e-17
+                },
+                {
+                    "cell_type": "NK cell",
+                    "pval": 3.480052942183335e-83,
+                    "score": 19.322412490844727,
+                    "logFC": 1.3798726797103882,
+                    "pval_adj": 6.3273689857878815e-81
+                }
+            ],
+            "TF enrichment": [
+                {
+                    "Term": "Apoptosis",
+                    "adj_pval": 0.003895570841519759
+                }
+            ]
+        },
+        "neighbor": {
+            "EIF2AK1": 0.695,
+            "PPP1R15A": 0.949,
+            "CEBPE": 0.654,
+            "MAPK13": 0.925,
+            "GADD45B": 0.644,
+            "MAPK12": 0.924,
+            "XBP1": 0.988,
+            "MAPK14": 0.95,
+            "EIF2AK2": 0.792,
+            "BATF3": 0.674,
+            "GADD45G": 0.629,
+            "EIF2S1": 0.951,
+            "EP300": 0.784,
+            "EIF2AK4": 0.777,
+            "ATF2": 0.776,
+            "JDP2": 0.651,
+            "TP53": 0.69,
+            "TNFRSF10B": 0.727,
+            "RPS3": 0.661,
+            "BATF": 0.677,
+            "HSP90B1": 0.726,
+            "CEBPB": 0.994,
+            "FOS": 0.905,
+            "EIF2AK3": 0.884,
+            "CYCS": 0.628,
+            "CASP3": 0.734,
+            "CALR": 0.686,
+            "HSPA5": 0.921,
+            "MAPK11": 0.928,
+            "ATF4": 0.996,
+            "RTL6": 0.657,
+            "ATF3": 0.988,
+            "RPS3A": 0.857,
+            "MAP3K5": 0.622,
+            "ATF6": 0.989,
+            "GADD45A": 0.783,
+            "JUN": 0.889,
+            "HDAC1": 0.742,
+            "ATF6B": 0.95,
+            "BCL2L11": 0.956,
+            "ERO1A": 0.8,
+            "NFE2L2": 0.968,
+            "BCL2": 0.972,
+            "CASP4": 0.632,
+            "ATF5": 0.771,
+            "ERN1": 0.887,
+            "BBC3": 0.876,
+            "TRIB3": 0.931,
+            "CEBPA": 0.943,
+            "CEBPG": 0.949
+        },
+        "context": {
+            "query": "DDIT3",
+            "summary": "This gene encodes a member of the CCAAT/enhancer-binding protein (C/EBP) family of transcription factors. The protein functions as a dominant-negative inhibitor by forming heterodimers with other C/EBP members, such as C/EBP and LAP (liver activator protein), and preventing their DNA binding activity. The protein is implicated in adipogenesis and erythropoiesis, is activated by endoplasmic reticulum stress, and promotes apoptosis. Fusion of this gene and FUS on chromosome 16 or EWSR1 on chromosome 22 induced by translocation generates chimeric proteins in myxoid liposarcomas or Ewing sarcoma. Multiple alternatively spliced transcript variants encoding two isoforms with different length have been identified. [provided by RefSeq, Aug 2010].",
+            "uniprot_function": null,
+            "go_biological_process": [
+                "establishment of protein localization to mitochondrion",
+                "positive regulation of endoplasmic reticulum stress-induced intrinsic apoptotic signaling pathway",
+                "PERK-mediated unfolded protein response",
+                "Wnt signaling pathway",
+                "vascular associated smooth muscle cell migration",
+                "apoptotic process",
+                "response to endoplasmic reticulum stress",
+                "positive regulation of intrinsic apoptotic signaling pathway",
+                "ER overload response",
+                "DNA damage response",
+                "negative regulation of type II interferon production",
+                "positive regulation of transcription by RNA polymerase II",
+                "regulation of transcription by RNA polymerase II",
+                "negative regulation of interleukin-17 production",
+                "regulation of cell cycle",
+                "diaphragm contraction",
+                "negative regulation of canonical Wnt signaling pathway",
+                "response to starvation",
+                "vascular associated smooth muscle cell proliferation",
+                "anterior/posterior axis specification",
+                "negative regulation of determination of dorsal identity",
+                "proteasome-mediated ubiquitin-dependent protein catabolic process",
+                "response to platelet-derived growth factor",
+                "release of sequestered calcium ion into cytosol",
+                "response to caloric restriction",
+                "ATF6-mediated unfolded protein response",
+                "response to unfolded protein",
+                "HRI-mediated signaling",
+                "response to wounding",
+                "blood vessel maturation",
+                "positive regulation of interleukin-8 production",
+                "intrinsic apoptotic signaling pathway in response to nitrosative stress",
+                "integrated stress response signaling",
+                "negative regulation of DNA-templated transcription",
+                "negative regulation of myoblast differentiation",
+                "intrinsic apoptotic signaling pathway in response to endoplasmic reticulum stress",
+                "calcium ion import",
+                "cell redox homeostasis",
+                "endoplasmic reticulum unfolded protein response",
+                "negative regulation of cold-induced thermogenesis",
+                "negative regulation of fat cell differentiation",
+                "negative regulation of interleukin-4 production",
+                "regulation of autophagy",
+                "positive regulation of neuron apoptotic process",
+                "artery development",
+                "gene expression",
+                "regulation of DNA-templated transcription",
+                "positive regulation of DNA-templated transcription",
+                "intracellular signal transduction",
+                "negative regulation of transcription by RNA polymerase II",
+                "sensory perception of sound",
+                "negative regulation of phosphatidylinositol 3-kinase/protein kinase B signal transduction"
+            ]
+        },
+        "reasoning": "In selecting genes that could serve as potential novel targets for the disease context of COVID-19, flu, and healthy controls, several factors were considered including the differential expression in relevant cell types, transcription factor enrichment linked to relevant pathways, and biological processes involved:\n\n1. **FOS**: This gene demonstrates significant involvement in immune response pathways, particularly the IL-17 signaling pathway, which is crucial considering its role in the inflammatory response seen in COVID-19. The high log fold change and statistically significant differential expression in NK and T cells, which are pivotal immune cells in viral infections, make FOS a compelling candidate for further investigation.\n\n2. **DDIT3**: Known for its role in apoptosis and response to endoplasmic reticulum stress, DDIT3 is crucial in the context of COVID-19, where cellular stress responses and apoptosis are significant. It also shows strong differential expression in B and NK cells and enrichment in pathways involving apoptosis and stress response.\n\n3. **IL1B**: As a critical component of the cytokine storm observed in severe COVID-19 cases, IL1B stands out due to its role in producing inflammatory responses. It shows high differential expression in monocytes, which are key players in inflammation and immune response dysregulation seen in COVID-19 patients.\n\n4. **DUSP1**: This gene acts as a negative regulator of MAPK pathways, which are critical in controlling inflammation and immune activation. The involvement of DUSP1 in multiple inflammatory and stress-response pathways indicates a potential regulatory role in the excessive inflammatory responses seen in severe COVID-19 cases.\n\nEach chosen gene is involved in pathways or biological processes that are highly relevant to the disease context, whether through direct involvement in immune signaling, regulation of apoptosis, or inflammatory responses, making them strong candidates for further investigation."
+    },
+    "IL1B": {
+        "deg": {
+            "celltypist": {
+                "top_celltypist_major": 5,
+                "values": {
+                    "Transitional DC": 1.0,
+                    "Megakaryocyte precursor": 1.0,
+                    "Treg(diff)": 1.0,
+                    "Intermediate macrophages": 0.9259,
+                    "Intestinal macrophages": 0.8462
+                }
+            },
+            "subtype": {
+                "top_subtype": 5,
+                "values": {
+                    "Activated Neutrophil": 0.6324,
+                    "Classical Monocyte": 0.4982,
+                    "cDCs": 0.3932,
+                    "Inflammatory Monocyte": 0.3684,
+                    "Effector NK cell": 0.2892
+                }
+            },
+            "DEG": [
+                {
+                    "cell_type": "Monocyte",
+                    "pval": 0.0,
+                    "score": 44.56789016723633,
+                    "logFC": 3.443692684173584,
+                    "pval_adj": 0.0
+                }
+            ],
+            "TF enrichment": [
+                {
+                    "Term": "Chagas disease (American trypanosomiasis)",
+                    "adj_pval": 0.003895570841519759
+                },
+                {
+                    "Term": "Fluid shear stress and atherosclerosis",
+                    "adj_pval": 0.003895570841519759
+                },
+                {
+                    "Term": "IL-17 signaling pathway",
+                    "adj_pval": 0.004639217106469604
+                },
+                {
+                    "Term": "Leishmaniasis",
+                    "adj_pval": 0.005261431374460489
+                },
+                {
+                    "Term": "C-type lectin receptor signaling pathway",
+                    "adj_pval": 0.012043960341550187
+                },
+                {
+                    "Term": "Rheumatoid arthritis",
+                    "adj_pval": 0.013607325097716097
+                }
+            ]
+        },
+        "neighbor": {
+            "CD4": 0.958,
+            "TNFRSF1A": 0.997,
+            "NFKBIA": 0.945,
+            "CSF3": 0.996,
+            "CCL2": 0.97,
+            "NFKB1": 0.996,
+            "IL2": 0.999,
+            "IFNG": 0.998,
+            "IL4": 0.998,
+            "IL5": 0.998,
+            "PYCARD": 0.989,
+            "IL1RN": 0.968,
+            "TLR2": 0.969,
+            "IL1A": 0.999,
+            "CCL4": 0.94,
+            "CASP8": 0.943,
+            "CD40": 0.949,
+            "MMP9": 0.949,
+            "IL13": 0.953,
+            "CCL11": 0.957,
+            "CCL20": 0.958,
+            "IL17A": 0.962,
+            "CXCL10": 0.962,
+            "CXCL2": 0.968,
+            "HMGB1": 0.97,
+            "CCL3": 0.972,
+            "PTGS2": 0.974,
+            "IL6R": 0.975,
+            "TLR9": 0.975,
+            "IL3": 0.977,
+            "CXCL1": 0.978,
+            "TRAF6": 0.981,
+            "A2M": 0.984,
+            "CASP4": 0.985,
+            "TLR4": 0.986,
+            "JUN": 0.987,
+            "RELA": 0.99,
+            "IL18": 0.99,
+            "IRAK1": 0.991,
+            "IL10": 0.991,
+            "CXCL8": 0.994,
+            "IL6": 0.996,
+            "NLRP3": 0.997,
+            "TNF": 0.998,
+            "CSF2": 0.998,
+            "IL1R2": 0.999,
+            "CASP1": 0.999,
+            "MYD88": 0.999,
+            "IL1R1": 0.999,
+            "IL1RAP": 0.999
+        },
+        "context": {
+            "query": "IL1B",
+            "summary": "The protein encoded by this gene is a member of the interleukin 1 cytokine family. This cytokine is produced by activated macrophages as a proprotein, which is proteolytically processed to its active form by caspase 1 (CASP1/ICE). This cytokine is an important mediator of the inflammatory response, and is involved in a variety of cellular activities, including cell proliferation, differentiation, and apoptosis. The induction of cyclooxygenase-2 (PTGS2/COX2) by this cytokine in the central nervous system (CNS) is found to contribute to inflammatory pain hypersensitivity. Similarly, IL-1B has been implicated in human osteoarthritis pathogenesis. Patients with severe Coronavirus Disease 2019 (COVID-19) present elevated levels of pro-inflammatory cytokines such as IL-1B in bronchial alveolar lavage fluid samples. The lung damage induced by the Severe acute respiratory syndrome coronavirus 2 (SARS-CoV-2) is to a large extent, a result of the inflammatory response promoted by cytokines such as IL-1B. This gene and eight other interleukin 1 family genes form a cytokine gene cluster on chromosome 2. [provided by RefSeq, Jul 2020].",
+            "uniprot_function": null,
+            "go_biological_process": [
+                "regulation of establishment of endothelial barrier",
+                "positive regulation of chemokine production",
+                "positive regulation of T-helper 1 cell cytokine production",
+                "response to ATP",
+                "positive regulation of angiogenesis",
+                "negative regulation of insulin receptor signaling pathway",
+                "positive regulation of interleukin-6 production",
+                "cellular response to mechanical stimulus",
+                "positive regulation of ERK1 and ERK2 cascade",
+                "positive regulation of heterotypic cell-cell adhesion",
+                "positive regulation of complement activation",
+                "neutrophil chemotaxis",
+                "positive regulation of interleukin-8 production",
+                "positive regulation of T cell mediated immunity",
+                "positive regulation of cell adhesion molecule production",
+                "positive regulation of interleukin-2 production",
+                "negative regulation of inflammatory response",
+                "positive regulation of fever generation",
+                "positive regulation of prostaglandin biosynthetic process",
+                "signal transduction",
+                "negative regulation of lipid catabolic process",
+                "positive regulation of type II interferon production",
+                "positive regulation of p38MAPK cascade",
+                "hyaluronan biosynthetic process",
+                "positive regulation of granulocyte macrophage colony-stimulating factor production",
+                "smooth muscle adaptation",
+                "positive regulation of lipid catabolic process",
+                "regulation of canonical NF-kappaB signal transduction",
+                "cellular response to xenobiotic stimulus",
+                "positive regulation of canonical NF-kappaB signal transduction",
+                "positive regulation of prostaglandin secretion",
+                "positive regulation of macrophage derived foam cell differentiation",
+                "negative regulation of interleukin-1-mediated signaling pathway",
+                "positive regulation of nitric oxide biosynthetic process",
+                "positive regulation of cytokine production",
+                "positive regulation of tight junction disassembly",
+                "cytokine-mediated signaling pathway",
+                "regulation of secretion by cell",
+                "regulation of defense response to virus by host",
+                "regulation of insulin secretion",
+                "negative regulation of extrinsic apoptotic signaling pathway in absence of ligand",
+                "ectopic germ cell programmed cell death",
+                "positive regulation of JNK cascade",
+                "positive regulation of platelet-derived growth factor receptor signaling pathway",
+                "negative regulation of interleukin-1 beta production",
+                "immune response",
+                "positive regulation of membrane protein ectodomain proteolysis",
+                "positive regulation of DNA-templated transcription",
+                "response to interleukin-1",
+                "monocyte aggregation",
+                "leukocyte migration",
+                "interleukin-1-mediated signaling pathway",
+                "positive regulation of protein export from nucleus",
+                "apoptotic process",
+                "astrocyte activation",
+                "extrinsic apoptotic signaling pathway in absence of ligand",
+                "positive regulation of neuroinflammatory response",
+                "embryo implantation",
+                "positive regulation of mitotic nuclear division",
+                "positive regulation of epithelial to mesenchymal transition",
+                "response to lipopolysaccharide",
+                "regulation of nitric-oxide synthase activity",
+                "negative regulation of D-glucose transmembrane transport",
+                "fever generation",
+                "cell-cell signaling",
+                "negative regulation of cell population proliferation",
+                "positive regulation of inflammatory response",
+                "positive regulation of phosphatidylinositol 3-kinase/protein kinase B signal transduction",
+                "positive regulation of vascular endothelial growth factor receptor signaling pathway",
+                "negative regulation of neurogenesis",
+                "positive regulation of cell division",
+                "positive regulation of glial cell proliferation",
+                "cellular response to lipopolysaccharide",
+                "positive regulation of vascular endothelial growth factor production",
+                "vascular endothelial growth factor production",
+                "inflammatory response",
+                "cellular response to interleukin-17",
+                "positive regulation of cell migration",
+                "regulation of ERK1 and ERK2 cascade",
+                "negative regulation of synaptic transmission",
+                "defense response to Gram-positive bacterium",
+                "positive regulation of transcription by RNA polymerase II",
+                "microglial cell activation involved in immune response",
+                "negative regulation of MAPK cascade",
+                "positive regulation of RNA biosynthetic process",
+                "monocyte differentiation",
+                "regulation of neurogenesis",
+                "positive regulation of immature T cell proliferation in thymus",
+                "response to carbohydrate",
+                "positive regulation of non-canonical NF-kappaB signal transduction",
+                "positive regulation of T cell proliferation",
+                "positive regulation of monocyte chemotactic protein-1 production",
+                "positive regulation of MAPK cascade",
+                "positive regulation of cell population proliferation",
+                "positive regulation of gene expression",
+                "negative regulation of lipid metabolic process",
+                "negative regulation of gap junction assembly",
+                "negative regulation of adiponectin secretion"
+            ]
+        },
+        "reasoning": "In selecting genes that could serve as potential novel targets for the disease context of COVID-19, flu, and healthy controls, several factors were considered including the differential expression in relevant cell types, transcription factor enrichment linked to relevant pathways, and biological processes involved:\n\n1. **FOS**: This gene demonstrates significant involvement in immune response pathways, particularly the IL-17 signaling pathway, which is crucial considering its role in the inflammatory response seen in COVID-19. The high log fold change and statistically significant differential expression in NK and T cells, which are pivotal immune cells in viral infections, make FOS a compelling candidate for further investigation.\n\n2. **DDIT3**: Known for its role in apoptosis and response to endoplasmic reticulum stress, DDIT3 is crucial in the context of COVID-19, where cellular stress responses and apoptosis are significant. It also shows strong differential expression in B and NK cells and enrichment in pathways involving apoptosis and stress response.\n\n3. **IL1B**: As a critical component of the cytokine storm observed in severe COVID-19 cases, IL1B stands out due to its role in producing inflammatory responses. It shows high differential expression in monocytes, which are key players in inflammation and immune response dysregulation seen in COVID-19 patients.\n\n4. **DUSP1**: This gene acts as a negative regulator of MAPK pathways, which are critical in controlling inflammation and immune activation. The involvement of DUSP1 in multiple inflammatory and stress-response pathways indicates a potential regulatory role in the excessive inflammatory responses seen in severe COVID-19 cases.\n\nEach chosen gene is involved in pathways or biological processes that are highly relevant to the disease context, whether through direct involvement in immune signaling, regulation of apoptosis, or inflammatory responses, making them strong candidates for further investigation."
+    },
+    "DUSP1": {
+        "deg": {
+            "celltypist": {
+                "top_celltypist_major": 5,
+                "values": {
+                    "ETP": 1.0,
+                    "Treg(diff)": 1.0,
+                    "Intermediate macrophages": 1.0,
+                    "ILC precursor": 1.0,
+                    "Germinal center B cells": 1.0
+                }
+            },
+            "subtype": {
+                "top_subtype": 5,
+                "values": {
+                    "Activated Neutrophil": 0.9728,
+                    "Non-classical Monocyte": 0.9594,
+                    "Intermediate Monocyte": 0.9383,
+                    "Classical Monocyte": 0.9203,
+                    "Plasma B cell": 0.8896
+                }
+            },
+            "DEG": [
+                {
+                    "cell_type": "NK cell",
+                    "pval": 4.643061226844475e-79,
+                    "score": 18.825780868530273,
+                    "logFC": 0.8144277930259705,
+                    "pval_adj": 7.42889796295116e-77
+                },
+                {
+                    "cell_type": "Monocyte",
+                    "pval": 1.8524862532786008e-196,
+                    "score": 29.90201759338379,
+                    "logFC": 0.8103450536727905,
+                    "pval_adj": 3.8999710595338964e-194
+                },
+                {
+                    "cell_type": "T cell",
+                    "pval": 1.2529143228089109e-62,
+                    "score": 16.702688217163086,
+                    "logFC": 1.1621553897857666,
+                    "pval_adj": 1.0023314582471287e-59
+                }
+            ],
+            "TF enrichment": [
+                {
+                    "Term": "Fluid shear stress and atherosclerosis",
+                    "adj_pval": 0.003895570841519759
+                }
+            ]
+        },
+        "neighbor": {
+            "PPP1R15A": 0.746,
+            "MAPK13": 0.955,
+            "GADD45B": 0.669,
+            "MAPK12": 0.972,
+            "MAPK1": 0.996,
+            "NFKBIA": 0.652,
+            "MAPK14": 0.998,
+            "HSPA1A": 0.607,
+            "CCN1": 0.609,
+            "CDR2": 0.61,
+            "SGK1": 0.611,
+            "ILF3": 0.613,
+            "IL1B": 0.615,
+            "H3-3B": 0.616,
+            "MAP2K4": 0.618,
+            "LOC102723407": 0.621,
+            "PTPRR": 0.635,
+            "NFKBIZ": 0.638,
+            "CCN2": 0.64,
+            "STAT1": 0.646,
+            "MYC": 0.646,
+            "SNRK": 0.647,
+            "EGR2": 0.656,
+            "EGFR": 0.668,
+            "TLN1": 0.669,
+            "TLN2": 0.672,
+            "NR4A2": 0.677,
+            "JUNB": 0.698,
+            "MAP2K1": 0.699,
+            "HDAC1": 0.711,
+            "CALM3": 0.726,
+            "BTG2": 0.739,
+            "ATF2": 0.739,
+            "TSC22D3": 0.74,
+            "IL6": 0.745,
+            "IER2": 0.749,
+            "CKS1B": 0.75,
+            "KLF6": 0.772,
+            "NR4A1": 0.794,
+            "EGR1": 0.8,
+            "SKP2": 0.808,
+            "ATF3": 0.833,
+            "FOSB": 0.864,
+            "JUN": 0.911,
+            "ZFP36": 0.934,
+            "FOS": 0.961,
+            "MAPK9": 0.968,
+            "MAPK11": 0.973,
+            "MAPK8": 0.992,
+            "MAPK3": 0.996
+        },
+        "context": {
+            "query": "DUSP1",
+            "summary": "The protein encoded by this gene is a phosphatase with dual specificity for tyrosine and threonine. The encoded protein can dephosphorylate MAP kinase MAPK1/ERK2, which results in its involvement in several cellular processes. This protein appears to play an important role in the human cellular response to environmental stress as well as in the negative regulation of cellular proliferation. Finally, the encoded protein can make some solid tumors resistant to both chemotherapy and radiotherapy, making it a target for cancer therapy. [provided by RefSeq, Aug 2017].",
+            "uniprot_function": null,
+            "go_biological_process": [
+                "regulation of mitotic cell cycle spindle assembly checkpoint",
+                "negative regulation of p38MAPK cascade",
+                "response to light stimulus",
+                "response to calcium ion",
+                "cellular response to chemokine",
+                "response to hydrogen peroxide",
+                "negative regulation of MAPK cascade",
+                "peptidyl-serine dephosphorylation",
+                "negative regulation of DNA biosynthetic process",
+                "cellular response to hormone stimulus",
+                "negative regulation of meiotic cell cycle",
+                "endoderm formation",
+                "response to testosterone",
+                "response to glucocorticoid",
+                "negative regulation of cell population proliferation",
+                "negative regulation of cell adhesion",
+                "peptidyl-threonine dephosphorylation",
+                "negative regulation of ERK1 and ERK2 cascade",
+                "response to retinoic acid",
+                "response to cAMP",
+                "negative regulation of monocyte chemotaxis",
+                "negative regulation of apoptotic process",
+                "positive regulation of apoptotic process",
+                "signal transduction",
+                "intracellular signal transduction",
+                "response to estradiol"
+            ]
+        },
+        "reasoning": "In selecting genes that could serve as potential novel targets for the disease context of COVID-19, flu, and healthy controls, several factors were considered including the differential expression in relevant cell types, transcription factor enrichment linked to relevant pathways, and biological processes involved:\n\n1. **FOS**: This gene demonstrates significant involvement in immune response pathways, particularly the IL-17 signaling pathway, which is crucial considering its role in the inflammatory response seen in COVID-19. The high log fold change and statistically significant differential expression in NK and T cells, which are pivotal immune cells in viral infections, make FOS a compelling candidate for further investigation.\n\n2. **DDIT3**: Known for its role in apoptosis and response to endoplasmic reticulum stress, DDIT3 is crucial in the context of COVID-19, where cellular stress responses and apoptosis are significant. It also shows strong differential expression in B and NK cells and enrichment in pathways involving apoptosis and stress response.\n\n3. **IL1B**: As a critical component of the cytokine storm observed in severe COVID-19 cases, IL1B stands out due to its role in producing inflammatory responses. It shows high differential expression in monocytes, which are key players in inflammation and immune response dysregulation seen in COVID-19 patients.\n\n4. **DUSP1**: This gene acts as a negative regulator of MAPK pathways, which are critical in controlling inflammation and immune activation. The involvement of DUSP1 in multiple inflammatory and stress-response pathways indicates a potential regulatory role in the excessive inflammatory responses seen in severe COVID-19 cases.\n\nEach chosen gene is involved in pathways or biological processes that are highly relevant to the disease context, whether through direct involvement in immune signaling, regulation of apoptosis, or inflammatory responses, making them strong candidates for further investigation."
+    },
+    "NFKBIA": {
+        "deg": {
+            "celltypist": {
+                "top_celltypist_major": 5,
+                "values": {
+                    "HSC/MPP": 1.0,
+                    "Treg(diff)": 1.0,
+                    "Migratory DCs": 1.0,
+                    "Megakaryocyte precursor": 1.0,
+                    "ILC3": 1.0
+                }
+            },
+            "subtype": {
+                "top_subtype": 5,
+                "values": {
+                    "CD8+ T cell": 0.9937,
+                    "Activated Neutrophil": 0.9551,
+                    "Plasma B cell": 0.9545,
+                    "cDCs": 0.9356,
+                    "Classical Monocyte": 0.9333
+                }
+            },
+            "DEG": [
+                {
+                    "cell_type": "B cell",
+                    "pval": 4.670380005117938e-57,
+                    "score": 15.919100761413574,
+                    "logFC": 0.7288379669189453,
+                    "pval_adj": 3.73630400409435e-54
+                },
+                {
+                    "cell_type": "NK cell",
+                    "pval": 0.0,
+                    "score": 46.44164276123047,
+                    "logFC": 1.817118525505066,
+                    "pval_adj": 0.0
+                },
+                {
+                    "cell_type": "Monocyte",
+                    "pval": 2.0549305852907723e-189,
+                    "score": 29.355133056640625,
+                    "logFC": 0.9632934331893921,
+                    "pval_adj": 4.1098611705815445e-187
+                },
+                {
+                    "cell_type": "T cell",
+                    "pval": 1.1347660654656e-27,
+                    "score": 10.901416778564453,
+                    "logFC": 0.5124874711036682,
+                    "pval_adj": 2.5217023677013333e-25
+                }
+            ],
+            "TF enrichment": [
+                {
+                    "Term": "Chagas disease (American trypanosomiasis)",
+                    "adj_pval": 0.003895570841519759
+                },
+                {
+                    "Term": "Apoptosis",
+                    "adj_pval": 0.003895570841519759
+                },
+                {
+                    "Term": "IL-17 signaling pathway",
+                    "adj_pval": 0.004639217106469604
+                },
+                {
+                    "Term": "Leishmaniasis",
+                    "adj_pval": 0.005261431374460489
+                },
+                {
+                    "Term": "C-type lectin receptor signaling pathway",
+                    "adj_pval": 0.012043960341550187
+                },
+                {
+                    "Term": "Pathways in cancer",
+                    "adj_pval": 0.01567489170660479
+                },
+                {
+                    "Term": "Small cell lung cancer",
+                    "adj_pval": 0.01765960316961142
+                }
+            ]
+        },
+        "neighbor": {
+            "BCL3": 0.904,
+            "RBX1": 0.987,
+            "COMMD1": 0.883,
+            "CXCL8": 0.887,
+            "BCL10": 0.888,
+            "MALT1": 0.89,
+            "FBXO22": 0.901,
+            "MYD88": 0.903,
+            "CSNK2A3": 0.907,
+            "UBE2D4": 0.908,
+            "JUN": 0.908,
+            "TBK1": 0.91,
+            "TP53": 0.915,
+            "STAT1": 0.917,
+            "SFN": 0.918,
+            "USP11": 0.922,
+            "IRAK1": 0.922,
+            "NEDD8": 0.926,
+            "CSNK2A2": 0.927,
+            "IL6": 0.927,
+            "CSNK2A1": 0.929,
+            "ARRB1": 0.936,
+            "IL1B": 0.945,
+            "UBA52": 0.952,
+            "UBB": 0.957,
+            "UBC": 0.963,
+            "CSNK2B": 0.964,
+            "UBE2D1": 0.964,
+            "PRKACG": 0.965,
+            "PRKACA": 0.965,
+            "PRKACB": 0.965,
+            "TRAF6": 0.966,
+            "TNF": 0.967,
+            "RPS27A": 0.986,
+            "ARRB2": 0.986,
+            "NFKBIE": 0.987,
+            "FBXW11": 0.989,
+            "UBE2D2": 0.994,
+            "NFKB2": 0.995,
+            "RELB": 0.995,
+            "SKP1": 0.999,
+            "IKBKG": 0.999,
+            "NFKBIB": 0.999,
+            "REL": 0.999,
+            "BTRC": 0.999,
+            "CHUK": 0.999,
+            "IKBKB": 0.999,
+            "NFKB1": 0.999,
+            "CUL1": 0.999,
+            "RELA": 0.999
+        },
+        "context": {
+            "query": "NFKBIA",
+            "summary": "This gene encodes a member of the NF-kappa-B inhibitor family, which contain multiple ankrin repeat domains. The encoded protein interacts with REL dimers to inhibit NF-kappa-B/REL complexes which are involved in inflammatory responses. The encoded protein moves between the cytoplasm and the nucleus via a nuclear localization signal and CRM1-mediated nuclear export. Mutations in this gene have been found in ectodermal dysplasia anhidrotic with T-cell immunodeficiency autosomal dominant disease. [provided by RefSeq, Aug 2011].",
+            "uniprot_function": null,
+            "go_biological_process": [
+                "interleukin-1-mediated signaling pathway",
+                "cellular response to tumor necrosis factor",
+                "positive regulation of transcription by RNA polymerase II",
+                "negative regulation of macrophage derived foam cell differentiation",
+                "toll-like receptor 4 signaling pathway",
+                "cellular response to cytokine stimulus",
+                "response to lipopolysaccharide",
+                "regulation of cell population proliferation",
+                "negative regulation of canonical NF-kappaB signal transduction",
+                "tumor necrosis factor-mediated signaling pathway",
+                "negative regulation of lipid storage",
+                "response to muscle stretch",
+                "response to muramyl dipeptide",
+                "negative regulation of Notch signaling pathway",
+                "positive regulation of inflammatory response",
+                "B cell receptor signaling pathway",
+                "negative regulation of cholesterol transport",
+                "positive regulation of transcription initiation by RNA polymerase II",
+                "protein import into nucleus",
+                "nucleotide-binding oligomerization domain containing 1 signaling pathway",
+                "negative regulation of protein import into nucleus",
+                "canonical NF-kappaB signal transduction",
+                "nucleotide-binding oligomerization domain containing 2 signaling pathway",
+                "cellular response to cold",
+                "regulation of gene expression",
+                "positive regulation of DNA-templated transcription",
+                "lipopolysaccharide-mediated signaling pathway",
+                "response to exogenous dsRNA",
+                "negative regulation of myeloid cell differentiation",
+                "negative regulation of transcription by RNA polymerase II",
+                "negative regulation of cytokine production involved in inflammatory response",
+                "non-canonical NF-kappaB signal transduction"
+            ]
+        },
+        "reasoning": "Given the biological context of COVID-19, flu, and healthy controls, the selection of genes should focus on those involved in inflammatory, immune response, and cytokine signaling pathways, which are typically relevant in such respiratory diseases.\n\n**NFKBIA**:\n- **Role in Inflammatory Pathways**: NFKBIA is part of the NF-kappa-B inhibitor family, a critical player in controlling inflammatory responses, which are key to understanding and potentially managing inflammatory diseases such as COVID-19 and flu.\n- **DEG Importance**: The NFKBIA gene shows differential expression across multiple immune-related cell types (B cells, NK cells, monocytes, T cells), suggesting its broad impact on immune response during infection.\n- **TF Enrichment**: It is associated with pathways like IL-17 signaling and apoptosis, both of which are crucial during viral infections due to their roles in promoting inflammation and managing cell death.\n\n**S100A8**:\n- **Inflammatory Response Marker**: S100A8 is involved in processes like neutrophil chemotaxis, regulation of inflammatory response, and innate immune responses, making it relevant for diseases characterized by inflammation and immune system activation.\n- **DEG Significance**: High differential expression in monocytes and T cells points to its considerable involvement in immune system modulation during diseases like COVID-19 and flu.\n- **Pathway Connectivity**: Its involvement in the IL-17 signaling pathway highlights its role in inflammatory responses commonly seen in viral infections.\n\nThe genes NFKBIA and S100A8 are selected due to their central roles in immune regulation, inflammation, and cytokine signaling. These activities are particularly pertinent to respiratory infections where immune response plays a critical role in disease progression and severity."
+    },
+    "S100A8": {
+        "deg": {
+            "celltypist": {
+                "top_celltypist_major": 5,
+                "values": {
+                    "Germinal center B cells": 1.0,
+                    "MNP": 1.0,
+                    "Early lymphoid/T lymphoid": 1.0,
+                    "ETP": 1.0,
+                    "Classical monocytes": 0.9832
+                }
+            },
+            "subtype": {
+                "top_subtype": 5,
+                "values": {
+                    "CD8+ T cell": 1.0,
+                    "Activated Neutrophil": 0.9997,
+                    "Effector NK cell": 0.9986,
+                    "Intermediate Monocyte": 0.9985,
+                    "Classical Monocyte": 0.9753
+                }
+            },
+            "DEG": [
+                {
+                    "cell_type": "Monocyte",
+                    "pval": 1.2900427443752277e-248,
+                    "score": 33.67619323730469,
+                    "logFC": 1.4236289262771606,
+                    "pval_adj": 5.160170977500911e-246
+                },
+                {
+                    "cell_type": "T cell",
+                    "pval": 5.062217049312603e-34,
+                    "score": 12.1602201461792,
+                    "logFC": 2.217461347579956,
+                    "pval_adj": 1.4463477283750295e-31
+                }
+            ],
+            "TF enrichment": [
+                {
+                    "Term": "IL-17 signaling pathway",
+                    "adj_pval": 0.004639217106469604
+                }
+            ]
+        },
+        "neighbor": {
+            "ATP12A": 0.605,
+            "NOD1": 0.677,
+            "LTF": 0.701,
+            "RAC2": 0.74,
+            "TLR2": 0.858,
+            "TAOK1": 0.888,
+            "CDH1": 0.944,
+            "SMAD2": 0.58,
+            "ATP4A": 0.601,
+            "IL1B": 0.656,
+            "CSTA": 0.641,
+            "LY96": 0.814,
+            "NCF1": 0.618,
+            "ALB": 0.653,
+            "CAMP": 0.622,
+            "CXCL8": 0.763,
+            "MET": 0.927,
+            "GAST": 0.598,
+            "SMAD3": 0.765,
+            "FGG": 0.583,
+            "TP53BP2": 0.843,
+            "HMGB1": 0.646,
+            "OCLN": 0.59,
+            "HP": 0.646,
+            "TJP1": 0.98,
+            "TLR1": 0.662,
+            "BECN1": 0.614,
+            "NCF2": 0.857,
+            "F11R": 0.612,
+            "S100A6": 0.701,
+            "S100A7": 0.775,
+            "CXCL2": 0.582,
+            "PRB2": 0.589,
+            "CXCL1": 0.601,
+            "HTRA1": 0.602,
+            "NCF4": 0.624,
+            "AGER": 0.634,
+            "MARK2": 0.643,
+            "CYBB": 0.659,
+            "CD36": 0.662,
+            "ITGB1": 0.665,
+            "SRC": 0.685,
+            "GAPDH": 0.723,
+            "CD14": 0.746,
+            "CD44": 0.887,
+            "TLR4": 0.907,
+            "GRB2": 0.913,
+            "PTPN11": 0.995,
+            "S100A12": 0.995,
+            "S100A9": 0.999
+        },
+        "context": {
+            "query": "S100A8",
+            "summary": "The protein encoded by this gene is a member of the S100 family of proteins containing 2 EF-hand calcium-binding motifs. S100 proteins are localized in the cytoplasm and/or nucleus of a wide range of cells, and involved in the regulation of a number of cellular processes such as cell cycle progression and differentiation. S100 genes include at least 13 members which are located as a cluster on chromosome 1q21. This protein may function in the inhibition of casein kinase and as a cytokine. Altered expression of this protein is associated with the disease cystic fibrosis. Multiple transcript variants encoding different isoforms have been found for this gene. [provided by RefSeq, Jan 2016].",
+            "uniprot_function": null,
+            "go_biological_process": [
+                "positive regulation of cell growth",
+                "autophagy",
+                "apoptotic process",
+                "positive regulation of intrinsic apoptotic signaling pathway",
+                "response to lipopolysaccharide",
+                "immune system process",
+                "response to zinc ion",
+                "neutrophil chemotaxis",
+                "defense response to bacterium",
+                "endothelial cell migration",
+                "positive regulation of inflammatory response",
+                "regulation of cytoskeleton organization",
+                "peptidyl-cysteine S-nitrosylation",
+                "response to ethanol",
+                "regulation of toll-like receptor signaling pathway",
+                "innate immune response",
+                "chemotaxis",
+                "autocrine signaling",
+                "inflammatory response",
+                "defense response to fungus",
+                "leukocyte migration involved in inflammatory response",
+                "neutrophil aggregation",
+                "astrocyte development",
+                "chronic inflammatory response",
+                "positive regulation of peptide secretion"
+            ]
+        },
+        "reasoning": "Given the biological context of COVID-19, flu, and healthy controls, the selection of genes should focus on those involved in inflammatory, immune response, and cytokine signaling pathways, which are typically relevant in such respiratory diseases.\n\n**NFKBIA**:\n- **Role in Inflammatory Pathways**: NFKBIA is part of the NF-kappa-B inhibitor family, a critical player in controlling inflammatory responses, which are key to understanding and potentially managing inflammatory diseases such as COVID-19 and flu.\n- **DEG Importance**: The NFKBIA gene shows differential expression across multiple immune-related cell types (B cells, NK cells, monocytes, T cells), suggesting its broad impact on immune response during infection.\n- **TF Enrichment**: It is associated with pathways like IL-17 signaling and apoptosis, both of which are crucial during viral infections due to their roles in promoting inflammation and managing cell death.\n\n**S100A8**:\n- **Inflammatory Response Marker**: S100A8 is involved in processes like neutrophil chemotaxis, regulation of inflammatory response, and innate immune responses, making it relevant for diseases characterized by inflammation and immune system activation.\n- **DEG Significance**: High differential expression in monocytes and T cells points to its considerable involvement in immune system modulation during diseases like COVID-19 and flu.\n- **Pathway Connectivity**: Its involvement in the IL-17 signaling pathway highlights its role in inflammatory responses commonly seen in viral infections.\n\nThe genes NFKBIA and S100A8 are selected due to their central roles in immune regulation, inflammation, and cytokine signaling. These activities are particularly pertinent to respiratory infections where immune response plays a critical role in disease progression and severity."
+    }
+}
