@@ -13,6 +13,7 @@ from itertools import product
 import celltypist
 import scanpy as sc
 import json
+import requests
 # load and mark
 
 import scanpy as sc
@@ -22,6 +23,7 @@ import pandas as pd
 
 # path specification for Human/Mouse
 # TO MODIFY BEFORE USE
+deg_tmp_file_name = "deg_tmp_result.txt"
 Species = "Mouse" # or "Mouse"
 enrich_kmt_file_map = {
     "Human" : "/Users/silviachen/Documents/Software/new_sca_agent/SCAagent/KEGG_2021_Human.gmt",
@@ -809,7 +811,7 @@ def get_gene_by_disease(adata, curr_adata, curr_group, cell_types_to_analyze, co
             n_genes = n_genes
         )
         complete_list.append(deg_results)
-        with open("deg_tmp_results.txt", "a", encoding="utf-8") as f:
+        with open(deg_tmp_file_name, "a", encoding="utf-8") as f:
             f.write(f"## {cell_type}\n")
             for grp, df in deg_results.items():
                 preferred_cols = [
@@ -914,7 +916,7 @@ def deg_for_time_series(adata, time_groups, sample_group_col="sample_group", k=1
 
     return all_results
 
-import requests
+
 from collections import defaultdict
 
 STRING_API = "https://string-db.org/api"
@@ -936,7 +938,7 @@ def fetch_string_neighbors_clean(gene_symbol, species=9606, limit=50):
         "caller_identity": "your_app"
     }
 
-    r = requests.get(endpoint, params=params)
+    r = requests.get(endpoint, params=params, verify=False)
     lines = r.text.strip().split("\n")
 
     if len(lines) < 2:
@@ -981,7 +983,7 @@ def fetch_string_neighbors_clean(gene_symbol, species=9606, limit=50):
     return neighbors
 
 
-import requests
+
 
 def fetch_gene_summary(gene_ensemeble_id):
     """
@@ -998,7 +1000,7 @@ def fetch_gene_summary(gene_ensemeble_id):
         "species": "human"
     }
 
-    r = requests.get(url, params=params)
+    r = requests.get(url, params=params, verify=False)
     data = r.json()
 
     if "hits" not in data or len(data["hits"]) == 0:
@@ -1032,7 +1034,7 @@ def fetch_gene_summary(gene_ensemeble_id):
         "go_biological_process": list(go_terms)
     }
 
-import requests
+
 
 API_URL = "https://api.platform.opentargets.org/api/v4/graphql"
 
@@ -1059,7 +1061,7 @@ def fetch_target_data(ensembl_id):
     """
 
     variables = {"ensembl_id": ensembl_id}
-    r = requests.post(API_URL, json={"query": query, "variables": variables})
+    r = requests.post(API_URL, json={"query": query, "variables": variables}, verify=False)
     resp = r.json()
 
     if "errors" in resp:
