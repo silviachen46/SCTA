@@ -997,7 +997,7 @@ def fetch_gene_summary(gene_ensemeble_id):
     params = {
         "q": gene_ensemeble_id,
         "fields": "summary,uniprot,go.BP",
-        "species": "human"
+        "species": Species.lower()
     }
 
     r = requests.get(url, params=params, verify=False)
