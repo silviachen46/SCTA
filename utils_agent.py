@@ -25,6 +25,7 @@ import pandas as pd
 # TO MODIFY BEFORE USE
 deg_tmp_file_name = "deg_tmp_result.txt"
 Species = "Mouse" # or "Mouse"
+string_neighbor_species = 9606 if Species == "Human" else 10090
 enrich_kmt_file_map = {
     "Human" : "/Users/silviachen/Documents/Software/new_sca_agent/SCAagent/KEGG_2021_Human.gmt",
     "Mouse" : "/Users/silviachen/Documents/Software/SCAagent/KEGG_mouse_2019.gmt"
@@ -922,7 +923,7 @@ from collections import defaultdict
 STRING_API = "https://string-db.org/api"
 
 
-def fetch_string_neighbors_clean(gene_symbol, species=9606, limit=50):
+def fetch_string_neighbors_clean(gene_symbol, species=string_neighbor_species, limit=50):
     """
     Returns a clean dict:
         { neighbor_gene_symbol : interaction_score }
