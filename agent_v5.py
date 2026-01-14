@@ -131,7 +131,6 @@ def get_deg_full(
 ) -> dict[str, pd.DataFrame]
 def get_gene_by_disease(adata, curr_adata, curr_group, cell_types_to_analyze, n_genes = 300, control_type="Ctl") -> Dictionary
 The default value for n_genes is 300, you should decide what specific value to use based on the adata info.
-def get_filtered_gene_list(adata, gene_list) -> List
 """
 ## insight is changed
 INSIGHT_TASK_PROMPT = """
@@ -150,8 +149,8 @@ Based on former result, first figure out different types of disease subtype to s
 Save a copy for each of their adata with the control type: adata_a = adata[adata.obs['group'].isin(['control_type', 'a'])].copy() for each of the disease subtype. You should adjust control_type name as given.
 Now for each of these sub adata using something like for curr_adata, curr_group in zip([adata_a, adata_b], ["a", "b"]): , 
 Get potential gene set for each disease type using the function provided with adata(the original one), curr_adata, curr_group, cell_types_to_analyze, and the control_type name in current dataset, store the output in variable potential_gene_set.
-Filter the gene set with given function, which accepts a list of gene symbols(keys of the gene dictionary) and return a list of filtered gene symbols. You should filter the dictionary and only keep those present in list.
-Print the current group name along with the filtered potentail gene dictionary, switch line everytime.
+
+Print the current group name along with the potentail gene dictionary, switch line everytime.
 I will use this regex to match the code. Generate python code following this patter: pattern = r"```python\n(.*?)\n```"
 
 Here is the set of functions available for you to use. You should use functions whenever possible:
