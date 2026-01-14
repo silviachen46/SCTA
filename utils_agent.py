@@ -710,6 +710,16 @@ def collect_tf_enrichment_details(
         Dict in format {gene: [ {"Term": ..., "adj_pval": ...}, ... ]}
     """
     #reset names column
+    del adata.uns["rank_genes_groups"]["names"]
+    get_deg_full(
+                adata,
+                groupby="group",          # Grouping by 'group' (Ctl, Her, Idio)
+                reference=control_type,          # Using Control (Ctl) as the reference
+                method="wilcoxon",        # Wilcoxon method for DEG analysis
+                top_n=30,                 # Top DEGs
+                use_raw=False,            # Do not use raw data
+                n_genes = n_genes
+            )
     from collections import defaultdict
 
     # Use nested dict to store best adj_pval per gene-term pair
