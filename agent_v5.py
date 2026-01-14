@@ -8,6 +8,7 @@ import os
 
 ### everything to replace starts here
 TIME_AWARE = False
+TARGET_GENE_NUM = 10
 BIOLOGICAL_CONTEXT = """This study is on sample with patients with COVID-19, Flu, and healthy controls."""
 #"""This dataset comprises single-cell data of human prostate adenocarcinoma samples, including both tumor and benign tissues."""
 
@@ -331,7 +332,7 @@ class FilterAgent(AgentBase):
 
         return {"code_state": "Success", "code_error": None, "code_result": f"Processed groups: {group_list}"}
 
-    def single_filter_target(self, curr_group, batch_size=5, target_gene_number=5):
+    def single_filter_target(self, curr_group, batch_size=5, target_gene_number=TARGET_GENE_NUM):
 
         # --------------------------
         # Load correct JSON file
