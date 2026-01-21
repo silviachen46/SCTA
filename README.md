@@ -5,7 +5,7 @@ This repository contains the source code for the paper:
 
 **SCTA: An Agentic Framework for Stable and Interpretable Target Gene Discovery from Single-Cell RNA Sequencing**
 
-The code implements the full pipeline described in the manuscript, including preprocessing, agent coordination, target gene prioritization, and evaluation.  
+The code implements the full pipeline described in the manuscript, including preprocessing, agent coordination, target gene discovery, and evaluation.  
 All results reported in the paper can be reproduced using the instructions below.
 
 ---
