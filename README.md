@@ -81,6 +81,13 @@ curl -L \
 -o KEGG_mouse_2019.gmt
 ```
 
+Register kernel space for automatically running the notebook:
+```bash
+python -m pip install ipykernel
+python -m ipykernel install --user --name python3 --display-name "Python 3 (scta)"
+```
+
+
 Place all of them in your root folder for easier management.
 
 ### Step 1: Replacing necessary configurations
