@@ -44,6 +44,11 @@ conda create -n scta python=3.13.1
 conda activate scta
 pip install -r requirements.txt
 ```
+Register kernel space for automatically running the notebook:
+```bash
+python -m pip install ipykernel
+python -m ipykernel install --user --name python3 --display-name "Python 3 (scta)"
+```
 
 ---
 
@@ -81,11 +86,6 @@ curl -L \
 -o KEGG_mouse_2019.gmt
 ```
 
-Register kernel space for automatically running the notebook:
-```bash
-python -m pip install ipykernel
-python -m ipykernel install --user --name python3 --display-name "Python 3 (scta)"
-```
 
 
 Place all of them in your root folder for easier management.
