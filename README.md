@@ -137,7 +137,7 @@ enrich_kmt_file_map = {
 ```
 
 ### Step 2: Agent-based Analysis
-Once everything is ready, simply click run button in main.py. You should see logs start printing in terminal.
+Once everything is ready, simply run the script using `python main.py`. You should see logs start printing in terminal.
 
 ### Step 3: Checking the Results
 
