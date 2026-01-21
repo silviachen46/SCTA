@@ -135,3 +135,7 @@ Parameters corresponding to the paper are documented inline.
 **Corresponding Author**  
 Name: Haohan Wang
 Email: [haohanw@illinois.edu]
+
+**First Author**  
+Name: Shuyu Chen
+Email: [shuyu5@illinois.edu]
