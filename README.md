@@ -82,3 +82,4 @@ Email: [haohanw@illinois.edu]
 **First Author**  
 Name: Shuyu Chen
 Email: [shuyu5@illinois.edu]
+For questiosn regarding code or data, feel free to reach out via email.
