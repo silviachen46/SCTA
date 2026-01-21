@@ -39,8 +39,9 @@ All results reported in the paper can be reproduced using the instructions below
 
 ### Install Dependencies
 
-using pip:
 ```bash
+conda create -n scta python=3.13.1
+conda activate scta
 pip install -r requirements.txt
 ```
 
