@@ -18,6 +18,7 @@ GLOBAL_RESULT = "graph_result1.txt" #"template_code/tumor_graph_results1.txt"
 
 ADATA_SOURCE_PATH = "/Users/silviachen/Documents/Software/new_sca_agent/SCAagent/covid_adata.h5ad" #"template_code/tumor_adata.h5ad"
 
+CLIENT_TYPE = "GPT" # or "Azure"
 ### everything to replace ends here
 
 PREPROCESS_ROLE_PROMPT = """You are responsible for cleaning, normalizing, and preparing the data for downstream analysis."""
@@ -208,7 +209,7 @@ class AgentBase:
         self.role_prompt = role_prompt
         self.tool_prompt = tool_prompt
         self.task_prompt = task_prompt
-        self.client = OpenAiClient()
+        self.client = OpenAiClient(client_type = CLIENT_TYPE)
         self.codes = []
         self.results = []
 
