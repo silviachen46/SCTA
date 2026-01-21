@@ -62,7 +62,9 @@ You should place them in the root folder before starting the agents
 
 ## Running the Pipeline
 use this curl command to download the gmt file required for enrichment:
+
 Human
+
 ```bash
 curl -L \
 "https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName=KEGG_2021_Human" \
