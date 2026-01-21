@@ -60,6 +60,20 @@ You should place them in the root folder before starting the agents
 ---
 
 ## Running the Pipeline
+use this curl command to download the gmt file required for enrichment:
+Human
+```bash
+curl -L \
+"https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName=KEGG_2021_Human" \
+-o KEGG_2021_Human.gmt
+```
+
+Mouse
+```bash
+curl -L \
+"https://maayanlab.cloud/Enrichr/geneSetLibrary?mode=text&libraryName=KEGG_2019_Mouse" \
+-o KEGG_mouse_2019.gmt
+```
 
 ### Step 1: Replacing necessary configurations
 ## agent_v5.py:
@@ -77,12 +91,53 @@ BIOLOGICAL_CONTEXT = """The dataset contains single-cell RNA sequencing profiles
 
 ```
 
-2. replace your TEST_FILE_NAME(python notebook name, end with .ipynb), GLOBAL_RESULT(has to be .txt, you can check your intermediate steps here), and ADATA_SOURCE_PATH(absolute path to your selected adata file) with your custom name. 
+2. replace your TEST_FILE_NAME(python notebook name, end with .ipynb), GLOBAL_RESULT(has to be .txt, you can check your intermediate steps here), and ADATA_SOURCE_PATH(absolute path to your selected adata file) with your custom name. Also specify CLIENT_TYPE to be "GPT"(directly uses OpenAI api) or "Azure".
 
-## agent_v5.py:
+
+## call_gpt.py:
+
+replace your api_key in OpenAI Client. If you select "Azure" in your above step, you should also specify api_key, api_version, and azure_endpoint in AzureOpenAI Client.
+
+## utils_agent.py:
+replace
+```bash
+Species = "Human" # or "Mouse"
+```
+and gmt file absolute path map for corresponding species.
+
+for example:
+```bash
+enrich_kmt_file_map = {
+    "Human" : "/Users/silviachen/Documents/Software/new_sca_agent/SCAagent/KEGG_2021_Human.gmt",
+    "Mouse" : "/Users/silviachen/Documents/Software/SCAagent/KEGG_mouse_2019.gmt"
+}
+```
 
 ### Step 2: Agent-based Analysis
+Once everything is ready, simply click run button in main.py. You should see logs start printing in terminal.
 
+### Step 3: Checking the Results
+
+After the pipeline finishes, the following files and folders are expected to be generated:
+
+#### Interpreting Output Files
+- `deg_tmp_results.txt`  
+  Intermediate differential expression results.
+
+- `graph_results.txt`  
+  Graph-based analysis results (file name may vary depending on configuration).
+
+- Jupyter notebook(s)  
+  Notebooks documenting the agentic steps used to conduct the single-cell analysis.
+
+#### Output Directories
+- `potential_gene_set/`  
+  Contains the initially selected candidate target genes for each disease group.
+
+- `result_gene_set/`  
+  Contains the final selected target genes for each disease group.
+
+Each of the two directories includes `disease_group.json` files corresponding to different disease groups.
 
 ---
 
