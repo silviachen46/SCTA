@@ -61,43 +61,16 @@ You should place them in the root folder before starting the agents
 
 ## Running the Pipeline
 
-### Step 1: Preprocessing
-```bash
-python scripts/run_preprocessing.py --config configs/preprocess.yaml
-```
+### Step 1: Replacing necessary configurations
+
 
 ### Step 2: Agent-based Analysis
-```bash
-python scripts/run_agents.py --config configs/agents.yaml
-```
 
-### Step 3: Target Gene Selection
-```bash
-python scripts/run_target_selection.py --config configs/targets.yaml
-```
-
----
-
-## Reproducing Paper Results
-
-
----
-
-## Configuration Details
-All experiments are controlled via YAML configuration files located in `configs/`.  
-Parameters corresponding to the paper are documented inline.
-
----
-
-## Reproducibility Notes
-- Random seeds are fixed where applicable.
-- Software versions are pinned.
-- Hyperparameters match the manuscript unless otherwise stated.
 
 ---
 
 ## License
-[Specify license]
+MIT License
 
 ---
 
