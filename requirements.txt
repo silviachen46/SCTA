@@ -16,3 +16,5 @@ scipy
 seaborn
 tqdm
 umap-learn
+psutil
+celltypist
