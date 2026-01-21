@@ -1,35 +1,137 @@
-# SCAagent
-updated note on 10/01/2025:
+# SCTA: An Agentic Framework for Stable and Interpretable Target Gene Discovery from scRNA-seq
 
-## Setup
-1. ensures executenote, utils_agent, main, agent_v5, call_gpt, and the h5ad file to be analyzed is being placed in the same folder. These are all the files needed.
+## Overview
+This repository contains the source code for the paper:
 
-2. replace all the path variables marked out in agent_v5, setup azure openai credentials in call_gpt
+**SCTA: An Agentic Framework for Stable and Interpretable Target Gene Discovery from Single-Cell RNA Sequencing**
 
-3. run main.py. Results from each step are being saved to the graph.txt file specified. You should also see a ipynotebook containing the python code generated.
+The code implements the full pipeline described in the manuscript, including preprocessing, agent coordination, target gene prioritization, and evaluation.  
+All results reported in the paper can be reproduced using the instructions below.
 
+---
 
+## Repository Structure
+```
+├── data/                  # Input data (or scripts to download data)
+├── preprocessing/         # Single-cell preprocessing code
+├── agents/                # Agent implementations
+├── evaluation/            # Evaluation and ablation analysis
+├── experiments/           # Scripts to reproduce paper experiments
+├── configs/               # Configuration files
+├── scripts/               # Entry-point scripts
+├── figures/               # Code to generate figures
+├── environment.yml        # Conda environment specification
+├── requirements.txt       # Optional pip requirements
+└── README.md
+```
 
-update: moved to Kaggle for memory requirement for large dataset:
-can be accessed here: https://www.kaggle.com/code/silvia46/sca-analysis
+---
 
-currently on T-cell and B-cell annotation:
-in preprocessing some R function are used and are not available in python, how do we substitute it?
-the paper mentioned annotation based on canonical genes, but no specific detail about which ones to look at for specific types in T-cells and B-cells
+## Environment Setup
 
-## features design
+### System Requirements
+- Operating system: [e.g., Ubuntu 20.04 / macOS 13]
+- Python version: [e.g., Python 3.10]
+- Hardware: [CPU-only / GPU optional]
 
-#### input: a folder of single cell data
+### Install Dependencies
 
-#### read initial gene data file, column info
+Using conda:
+```bash
+conda env create -f environment.yml
+conda activate scta
+```
 
-#### identify main steps (action units)
+Or using pip:
+```bash
+pip install -r requirements.txt
+```
 
-#### split tasks into specific agents, agents decide what tools to use and test with paramters
+---
 
-#### coding and debugging
+## Data Availability
 
-#### evaluate on file by file basis
-current need more info on this step, how do we evaluate each single cell analysis result
+### Datasets Used in the Paper
+- Dataset 1: [Name, description]  
+  Source: [URL / DOI]
 
-#### cumulate the result
+- Dataset 2: [Name, description]  
+  Source: [URL / DOI]
+
+If data cannot be redistributed directly, use the provided download scripts:
+```bash
+bash scripts/download_data.sh
+```
+
+Place downloaded data under:
+```bash
+data/
+```
+
+---
+
+## Running the Pipeline
+
+### Step 1: Preprocessing
+```bash
+python scripts/run_preprocessing.py --config configs/preprocess.yaml
+```
+
+### Step 2: Agent-based Analysis
+```bash
+python scripts/run_agents.py --config configs/agents.yaml
+```
+
+### Step 3: Target Gene Selection
+```bash
+python scripts/run_target_selection.py --config configs/targets.yaml
+```
+
+---
+
+## Reproducing Paper Results
+
+### Main Results
+```bash
+bash experiments/run_main_experiments.sh
+```
+
+### Ablation Studies
+```bash
+bash experiments/run_ablation.sh
+```
+
+### Figure Generation
+```bash
+bash experiments/generate_figures.sh
+```
+
+Figures will be saved under:
+```bash
+figures/
+```
+
+---
+
+## Configuration Details
+All experiments are controlled via YAML configuration files located in `configs/`.  
+Parameters corresponding to the paper are documented inline.
+
+---
+
+## Reproducibility Notes
+- Random seeds are fixed where applicable.
+- Software versions are pinned.
+- Hyperparameters match the manuscript unless otherwise stated.
+
+---
+
+## License
+[Specify license]
+
+---
+
+## Contact
+**Corresponding Author**  
+Name: Haohan Wang
+Email: [haohanw@illinois.edu]
