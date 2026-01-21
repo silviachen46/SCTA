@@ -94,7 +94,22 @@ BIOLOGICAL_CONTEXT = """The dataset contains single-cell RNA sequencing profiles
 
 ```
 
-2. replace your TEST_FILE_NAME(python notebook name, end with .ipynb), GLOBAL_RESULT(has to be .txt, you can check your intermediate steps here), and ADATA_SOURCE_PATH(absolute path to your selected adata file) with your custom name. Also specify CLIENT_TYPE to be "GPT"(directly uses OpenAI api) or "Azure".
+2. Replace the following placeholders with your custom values:
+
+- `TEST_FILE_NAME`  
+  Name of the Python notebook used in the pipeline (must end with `.ipynb`).
+
+- `GLOBAL_RESULT`  
+  Path to the global result file (must be a `.txt` file).  
+  This file records intermediate results and can be used to inspect the execution process.
+
+- `ADATA_SOURCE_PATH`  
+  Absolute path to the selected AnnData (`.h5ad`) file used as input.
+
+In addition, specify the client type by setting:
+
+- `CLIENT_TYPE`  
+  Choose `"GPT"` to directly use the OpenAI API, or `"Azure"` to use the Azure OpenAI service.
 
 
 ## call_gpt.py:
