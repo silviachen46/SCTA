@@ -78,6 +78,8 @@ curl -L \
 -o KEGG_mouse_2019.gmt
 ```
 
+Place all of them in your root folder for easier management.
+
 ### Step 1: Replacing necessary configurations
 ## agent_v5.py:
 
