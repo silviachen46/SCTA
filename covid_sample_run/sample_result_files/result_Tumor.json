@@ -1,0 +1,648 @@
+{
+    "BNIP3": {
+        "deg": {
+            "subtype": {
+                "top_subtype": 5,
+                "values": {
+                    "Prostatic secretory cells": 0.8849,
+                    "Luminal cells - KLK3+": 0.7929,
+                    "Prostatic epithelial cells": 0.5075,
+                    "Blood vascular endothelial cells": 0.4241,
+                    "Lymphatic endothelial cells": 0.3017
+                }
+            },
+            "DEG": [
+                {
+                    "cell_type": "Macrophages",
+                    "pval": 9.280868498261117e-08,
+                    "score": 5.340269088745117,
+                    "logFC": 0.6985184550285339,
+                    "pval_adj": 1.8561736996522235e-05
+                }
+            ],
+            "TF enrichment": [
+                {
+                    "Term": "FoxO signaling pathway",
+                    "adj_pval": 0.09192465286433422
+                },
+                {
+                    "Term": "Legionellosis",
+                    "adj_pval": 0.23031419087740573
+                }
+            ]
+        },
+        "neighbor": {
+            "Akt1": 0.642,
+            "Bcl2l13": 0.826,
+            "Gabarap": 0.999,
+            "Fis1": 0.684,
+            "Map1s": 0.662,
+            "Hif1a": 0.771,
+            "Ppif": 0.672,
+            "Bnip3l": 0.901,
+            "Bcl2l2": 0.699,
+            "Fbxo32": 0.652,
+            "Epas1": 0.676,
+            "Fundc1": 0.952,
+            "Cyct": 0.643,
+            "Map1lc3a": 0.784,
+            "Pink1": 0.869,
+            "Rheb": 0.998,
+            "Mfn2": 0.703,
+            "Gabarapl1": 0.967,
+            "Map1lc3b": 0.917,
+            "Gabarapl2": 0.97,
+            "Opa1": 0.76,
+            "Atg12": 0.738,
+            "Egln3": 0.636,
+            "Mcl1": 0.731,
+            "Atg5": 0.804,
+            "Ambra1": 0.631,
+            "Map1b": 0.647,
+            "Gm10053": 0.652,
+            "Mff": 0.689,
+            "Pgk1": 0.729,
+            "Calcoco2": 0.642,
+            "Mfn1": 0.639,
+            "Ccnd1": 0.7,
+            "Map1a": 0.903,
+            "Nbr1": 0.74,
+            "Vdac1": 0.708,
+            "Sqstm1": 0.743,
+            "Foxo3": 0.743,
+            "Bik": 0.632,
+            "Ldha": 0.641,
+            "Ppargc1a": 0.642,
+            "Casp3": 0.652,
+            "Pik3c3": 0.679,
+            "Atg14": 0.697,
+            "Fkbp8": 0.751,
+            "Prkn": 0.773,
+            "Atg7": 0.786,
+            "Becn1": 0.959,
+            "Bcl2l1": 0.993,
+            "Bcl2": 0.999
+        },
+        "context": {
+            "query": "BNIP3",
+            "summary": null,
+            "uniprot_function": null,
+            "go_biological_process": [
+                "mitochondrial fragmentation involved in apoptotic process",
+                "reactive oxygen species metabolic process",
+                "mitochondrial outer membrane permeabilization",
+                "response to hypoxia",
+                "brown fat cell differentiation",
+                "intrinsic apoptotic signaling pathway in response to hypoxia",
+                "response to oxygen-glucose deprivation",
+                "substrate localization to autophagosome",
+                "positive regulation of mitochondrial fission",
+                "negative regulation of programmed cell death",
+                "positive regulation of macroautophagy",
+                "positive regulation of release of cytochrome c from mitochondria",
+                "defense response to virus",
+                "cellular response to cobalt ion",
+                "mitochondrial protein catabolic process",
+                "autophagic cell death",
+                "positive regulation of autophagy of mitochondrion",
+                "response to bacterium",
+                "apoptotic process",
+                "regulation of mitochondrial membrane permeability",
+                "negative regulation of mitochondrial membrane potential",
+                "oligodendrocyte differentiation",
+                "negative regulation of mitochondrial membrane permeability involved in apoptotic process",
+                "response to hyperoxia",
+                "intrinsic apoptotic signaling pathway",
+                "negative regulation of mitochondrial fusion",
+                "positive regulation of cardiac muscle cell apoptotic process",
+                "response to axon injury",
+                "mitophagy",
+                "cellular response to hypoxia",
+                "reticulophagy",
+                "positive regulation of mitochondrial calcium ion concentration",
+                "positive regulation of apoptotic process",
+                "neuron apoptotic process",
+                "cellular response to mechanical stimulus",
+                "cerebral cortex development",
+                "positive regulation of protein-containing complex disassembly",
+                "cardiac muscle cell apoptotic process",
+                "cellular response to hydrogen peroxide",
+                "granzyme-mediated programmed cell death signaling pathway",
+                "positive regulation of programmed cell death",
+                "negative regulation of membrane potential"
+            ]
+        },
+        "reasoning": "When selecting genes from the given dataset for further investigation regarding prostate adenocarcinoma, several factors are taken into consideration, including differential expression (DEG) and transcription factor (TF) enrichment related to cancer pathways, as well as biological processes pertinent to cancer biology.\n\n1. **BNIP3**:\n   - **DEG**: Highly significant differential expression in macrophages with a very low adjusted p-value (1.856e-05) and a substantial log fold change, indicating its potential role in immune interactions within the tissue microenvironment.\n   - **TF Enrichment**: Enriched in pathways such as FoxO signaling, an important pathway in cancer biology.\n   - **Biological Processes**: Involved in processes like apoptotic signaling, response to hypoxia, and mitochondrial functions, highlighting its potential role in tumor progression and metabolic adaptations in cancer.\n\n2. **CTSD**:\n   - **DEG**: Showed differential expression in luminal epithelial cells, a key cell type involved in prostate cancer.\n   - **TF Enrichment**: Involvement in apoptosis and lysosome pathways, suggesting a role in cell death and survival pathways, which are critical in cancer.\n   - **Biological Processes**: Engaged in proteolysis and apoptosis, processes that are frequently altered in cancerous cells.\n\n3. **GADD45G**:\n   - **DEG**: Significant expression in macrophages with a very low adjusted p-value (7.056e-06) and high log fold change, suggesting a role in the immune-tumor interface.\n   - **TF Enrichment**: Involved in MAPK and FoxO signaling pathways, both of which are implicated in cancer and stress responses.\n   - **Biological Processes**: Participation in regulation of cell cycle and apoptotic processes, making it relevant in tumor growth and response to stress.\n\n\n**AUH and CTSL** were excluded because:\n\n- **AUH**: Although it is involved in metabolic processes (e.g., amino acid and fatty acid metabolism), its DEG significance is limited to macrophages with a less significant p-value compared to other candidates.\n\n- **CTSL**: It has significant differential expression in epithelial cells, but the pathways and processes it is involved in are less directly linked to cancer-specific pathways compared to the selected genes. Additionally, its roles in proteolysis are shared by other more promising candidates like CTSD, which has a more cancer-relevant expression pattern and pathway involvement."
+    },
+    "CTSD": {
+        "deg": {
+            "subtype": {
+                "top_subtype": 5,
+                "values": {
+                    "Activated Mast cells": 0.9194,
+                    "Prostatic secretory cells": 0.8849,
+                    "Monocytes": 0.8154,
+                    "Luminal cells - KLK3+": 0.7677,
+                    "Naive B cells": 0.7142
+                }
+            },
+            "DEG": [
+                {
+                    "cell_type": "Luminal epithelial cells",
+                    "pval": 0.00010781897556113212,
+                    "score": 3.872286796569824,
+                    "logFC": 0.22063538432121277,
+                    "pval_adj": 0.011656105466068338
+                },
+                {
+                    "cell_type": "Secretory epithelial cells",
+                    "pval": 0.0005240008234107269,
+                    "score": 3.468177556991577,
+                    "logFC": 0.37590160965919495,
+                    "pval_adj": 0.11644462742460598
+                }
+            ],
+            "TF enrichment": [
+                {
+                    "Term": "Lysosome",
+                    "adj_pval": 0.14438345151538443
+                },
+                {
+                    "Term": "Apoptosis",
+                    "adj_pval": 0.20548132528353216
+                }
+            ]
+        },
+        "neighbor": {
+            "Bid": 0.917,
+            "App": 0.683,
+            "Ctsb": 0.992,
+            "Birc3": 0.691,
+            "Ctsk": 0.738,
+            "Ctss": 0.875,
+            "Ctsz": 0.8,
+            "Lgmn": 0.659,
+            "Plau": 0.65,
+            "Cln5": 0.687,
+            "Igf2r": 0.789,
+            "Tfeb": 0.732,
+            "Xiap": 0.712,
+            "Cst3": 0.725,
+            "Map1lc3a": 0.741,
+            "Atp6v0d2": 0.673,
+            "Ppt1": 0.693,
+            "Ctsc": 0.708,
+            "Tpp1": 0.75,
+            "Atp6ap2": 0.793,
+            "Lamp1": 0.972,
+            "Vps35": 0.714,
+            "Map1lc3b": 0.734,
+            "Cln6": 0.655,
+            "Ctsh": 0.693,
+            "Atg5": 0.647,
+            "Grn": 0.785,
+            "C1qa": 0.65,
+            "Fn1": 0.642,
+            "Sorl1": 0.644,
+            "Eea1": 0.668,
+            "Agt": 0.874,
+            "Lamp2": 0.91,
+            "Birc5": 0.69,
+            "Cln3": 0.692,
+            "Ctsa": 0.872,
+            "Sqstm1": 0.696,
+            "Bcl2l1": 0.931,
+            "Bcl2": 0.947,
+            "Snca": 0.684,
+            "Ctsf": 0.745,
+            "Becn1": 0.679,
+            "Birc2": 0.693,
+            "Sort1": 0.708,
+            "Cd63": 0.715,
+            "Ide": 0.806,
+            "Gba": 0.83,
+            "Psap": 0.839,
+            "Ins2": 0.842,
+            "Ctsl": 0.896
+        },
+        "context": {
+            "query": "CTSD",
+            "summary": null,
+            "uniprot_function": null,
+            "go_biological_process": [
+                "positive regulation of apoptotic process",
+                "protein catabolic process",
+                "proteolysis",
+                "execution phase of apoptosis",
+                "vesicle-mediated transport in synapse",
+                "insulin catabolic process",
+                "lipoprotein catabolic process",
+                "regulation of establishment of protein localization",
+                "autophagosome assembly",
+                "insulin receptor recycling",
+                "synaptic vesicle endosomal processing",
+                "epithelial tube branching involved in lung morphogenesis"
+            ]
+        },
+        "reasoning": "When selecting genes from the given dataset for further investigation regarding prostate adenocarcinoma, several factors are taken into consideration, including differential expression (DEG) and transcription factor (TF) enrichment related to cancer pathways, as well as biological processes pertinent to cancer biology.\n\n1. **BNIP3**:\n   - **DEG**: Highly significant differential expression in macrophages with a very low adjusted p-value (1.856e-05) and a substantial log fold change, indicating its potential role in immune interactions within the tissue microenvironment.\n   - **TF Enrichment**: Enriched in pathways such as FoxO signaling, an important pathway in cancer biology.\n   - **Biological Processes**: Involved in processes like apoptotic signaling, response to hypoxia, and mitochondrial functions, highlighting its potential role in tumor progression and metabolic adaptations in cancer.\n\n2. **CTSD**:\n   - **DEG**: Showed differential expression in luminal epithelial cells, a key cell type involved in prostate cancer.\n   - **TF Enrichment**: Involvement in apoptosis and lysosome pathways, suggesting a role in cell death and survival pathways, which are critical in cancer.\n   - **Biological Processes**: Engaged in proteolysis and apoptosis, processes that are frequently altered in cancerous cells.\n\n3. **GADD45G**:\n   - **DEG**: Significant expression in macrophages with a very low adjusted p-value (7.056e-06) and high log fold change, suggesting a role in the immune-tumor interface.\n   - **TF Enrichment**: Involved in MAPK and FoxO signaling pathways, both of which are implicated in cancer and stress responses.\n   - **Biological Processes**: Participation in regulation of cell cycle and apoptotic processes, making it relevant in tumor growth and response to stress.\n\n\n**AUH and CTSL** were excluded because:\n\n- **AUH**: Although it is involved in metabolic processes (e.g., amino acid and fatty acid metabolism), its DEG significance is limited to macrophages with a less significant p-value compared to other candidates.\n\n- **CTSL**: It has significant differential expression in epithelial cells, but the pathways and processes it is involved in are less directly linked to cancer-specific pathways compared to the selected genes. Additionally, its roles in proteolysis are shared by other more promising candidates like CTSD, which has a more cancer-relevant expression pattern and pathway involvement."
+    },
+    "GADD45G": {
+        "deg": {
+            "subtype": {
+                "top_subtype": 5,
+                "values": {
+                    "Prostatic secretory cells": 0.7208,
+                    "Luminal cells - KLK3+": 0.5063,
+                    "Intestinal goblet cells": 0.2759,
+                    "Bronchial club cells": 0.2,
+                    "Prostatic epithelial cells": 0.182
+                }
+            },
+            "DEG": [
+                {
+                    "cell_type": "Macrophages",
+                    "pval": 2.998892554705539e-08,
+                    "score": 5.541501522064209,
+                    "logFC": 1.080884575843811,
+                    "pval_adj": 7.056217775777739e-06
+                }
+            ],
+            "TF enrichment": [
+                {
+                    "Term": "Transcriptional misregulation in cancer",
+                    "adj_pval": 0.012619869809124207
+                },
+                {
+                    "Term": "MAPK signaling pathway",
+                    "adj_pval": 0.04080454331148242
+                },
+                {
+                    "Term": "FoxO signaling pathway",
+                    "adj_pval": 0.09192465286433422
+                },
+                {
+                    "Term": "p53 signaling pathway",
+                    "adj_pval": 0.1340976385510837
+                },
+                {
+                    "Term": "Melanoma",
+                    "adj_pval": 0.1340976385510837
+                },
+                {
+                    "Term": "Glioma",
+                    "adj_pval": 0.14184850861898232
+                },
+                {
+                    "Term": "Epstein-Barr virus infection",
+                    "adj_pval": 0.14438345151538443
+                },
+                {
+                    "Term": "Pathways in cancer",
+                    "adj_pval": 0.14438345151538443
+                },
+                {
+                    "Term": "Apoptosis",
+                    "adj_pval": 0.20548132528353216
+                },
+                {
+                    "Term": "Endometrial cancer",
+                    "adj_pval": 0.23031419087740573
+                }
+            ]
+        },
+        "neighbor": {
+            "Map2k7": 0.442,
+            "Krt19": 0.407,
+            "Apbb1ip": 0.422,
+            "Gadd45b": 0.929,
+            "Cdk1": 0.977,
+            "Dusp6": 0.416,
+            "Btg2": 0.454,
+            "Fos": 0.471,
+            "Tgm2": 0.401,
+            "Mycbp": 0.402,
+            "Creld1": 0.418,
+            "Rbpj": 0.418,
+            "Krt9": 0.422,
+            "Pgr": 0.432,
+            "Gipc2": 0.432,
+            "Egr1": 0.434,
+            "Atf3": 0.437,
+            "Egr2": 0.443,
+            "Crebbp": 0.463,
+            "Nr4a1": 0.463,
+            "Jun": 0.484,
+            "Esr1": 0.496,
+            "Huwe1": 0.514,
+            "Stat3": 0.524,
+            "Casp3": 0.527,
+            "Dusp1": 0.54,
+            "Il6": 0.542,
+            "Cdc42ep3": 0.547,
+            "Irf2bp2": 0.551,
+            "Hmga2": 0.568,
+            "Ar": 0.571,
+            "Cdkn1a": 0.65,
+            "Rwdd2b": 0.673,
+            "Cd300lf": 0.682,
+            "Ccnb3": 0.919,
+            "Ccnb2": 0.923,
+            "Trp53": 0.931,
+            "Gadd45a": 0.935,
+            "Gadd45gip1": 0.943,
+            "Pcna": 0.944,
+            "Ccnb1": 0.969,
+            "Map3k4": 0.982
+        },
+        "context": {
+            "query": "GADD45G",
+            "summary": null,
+            "uniprot_function": null,
+            "go_biological_process": [
+                "negative regulation of protein kinase activity",
+                "positive regulation of apoptotic process",
+                "T-helper 1 cell differentiation",
+                "positive regulation of p38MAPK cascade",
+                "positive regulation of MAPK cascade",
+                "positive regulation of JNK cascade",
+                "cell differentiation",
+                "apoptotic process",
+                "regulation of cell cycle",
+                "positive regulation of cold-induced thermogenesis"
+            ]
+        },
+        "reasoning": "When selecting genes from the given dataset for further investigation regarding prostate adenocarcinoma, several factors are taken into consideration, including differential expression (DEG) and transcription factor (TF) enrichment related to cancer pathways, as well as biological processes pertinent to cancer biology.\n\n1. **BNIP3**:\n   - **DEG**: Highly significant differential expression in macrophages with a very low adjusted p-value (1.856e-05) and a substantial log fold change, indicating its potential role in immune interactions within the tissue microenvironment.\n   - **TF Enrichment**: Enriched in pathways such as FoxO signaling, an important pathway in cancer biology.\n   - **Biological Processes**: Involved in processes like apoptotic signaling, response to hypoxia, and mitochondrial functions, highlighting its potential role in tumor progression and metabolic adaptations in cancer.\n\n2. **CTSD**:\n   - **DEG**: Showed differential expression in luminal epithelial cells, a key cell type involved in prostate cancer.\n   - **TF Enrichment**: Involvement in apoptosis and lysosome pathways, suggesting a role in cell death and survival pathways, which are critical in cancer.\n   - **Biological Processes**: Engaged in proteolysis and apoptosis, processes that are frequently altered in cancerous cells.\n\n3. **GADD45G**:\n   - **DEG**: Significant expression in macrophages with a very low adjusted p-value (7.056e-06) and high log fold change, suggesting a role in the immune-tumor interface.\n   - **TF Enrichment**: Involved in MAPK and FoxO signaling pathways, both of which are implicated in cancer and stress responses.\n   - **Biological Processes**: Participation in regulation of cell cycle and apoptotic processes, making it relevant in tumor growth and response to stress.\n\n\n**AUH and CTSL** were excluded because:\n\n- **AUH**: Although it is involved in metabolic processes (e.g., amino acid and fatty acid metabolism), its DEG significance is limited to macrophages with a less significant p-value compared to other candidates.\n\n- **CTSL**: It has significant differential expression in epithelial cells, but the pathways and processes it is involved in are less directly linked to cancer-specific pathways compared to the selected genes. Additionally, its roles in proteolysis are shared by other more promising candidates like CTSD, which has a more cancer-relevant expression pattern and pathway involvement."
+    },
+    "IL7R": {
+        "deg": {
+            "subtype": {
+                "top_subtype": 5,
+                "values": {
+                    "CD4+ T cells": 0.8047,
+                    "M1 Macrophages": 0.7518,
+                    "Cytotoxic NK cells": 0.439,
+                    "Mature erythrocytes": 0.2381,
+                    "Intestinal goblet cells": 0.2069
+                }
+            },
+            "DEG": [
+                {
+                    "cell_type": "Luminal epithelial cells",
+                    "pval": 1.6247650275401094e-19,
+                    "score": 9.036022186279297,
+                    "logFC": 0.9295012950897217,
+                    "pval_adj": 3.2495300550802187e-16
+                },
+                {
+                    "cell_type": "Secretory epithelial cells",
+                    "pval": 2.255601084937535e-05,
+                    "score": 4.237959861755371,
+                    "logFC": 0.5216755867004395,
+                    "pval_adj": 0.007518670283125116
+                }
+            ],
+            "TF enrichment": [
+                {
+                    "Term": "FoxO signaling pathway",
+                    "adj_pval": 0.09192465286433422
+                },
+                {
+                    "Term": "Pathways in cancer",
+                    "adj_pval": 0.14438345151538443
+                }
+            ]
+        },
+        "neighbor": {
+            "Il4": 0.935,
+            "Tbx21": 0.799,
+            "Il21": 0.793,
+            "Cd3d": 0.802,
+            "Epo": 0.803,
+            "Itgax": 0.81,
+            "Havcr2": 0.813,
+            "Il17a": 0.815,
+            "Foxo1": 0.818,
+            "Lck": 0.818,
+            "Ccr6": 0.82,
+            "Ikzf1": 0.822,
+            "Kit": 0.824,
+            "Cd44": 0.827,
+            "Cd19": 0.831,
+            "Il3": 0.832,
+            "Cxcr5": 0.832,
+            "Foxp3": 0.848,
+            "Cd27": 0.849,
+            "Klrg1": 0.849,
+            "Cd48": 0.852,
+            "Csf2": 0.856,
+            "Cd69": 0.862,
+            "Sell": 0.871,
+            "Klrb1c": 0.872,
+            "Icos": 0.873,
+            "Fcgr3": 0.875,
+            "Il5": 0.88,
+            "Il13": 0.881,
+            "Il22": 0.882,
+            "Cd3e": 0.884,
+            "Il2ra": 0.886,
+            "Ptprc": 0.901,
+            "Il2rb": 0.91,
+            "Il6": 0.917,
+            "Ccr7": 0.925,
+            "Il10": 0.927,
+            "Ifng": 0.931,
+            "Il9": 0.932,
+            "Jak2": 0.933,
+            "Stat5a": 0.94,
+            "Cd4": 0.941,
+            "Il2": 0.96,
+            "Il15": 0.97,
+            "Jak3": 0.974,
+            "Jak1": 0.995,
+            "Tslp": 0.999,
+            "Il2rg": 0.999,
+            "Crlf2": 0.999,
+            "Il7": 0.999
+        },
+        "context": {
+            "query": "IL7R",
+            "summary": "Interleukin-7 is a glycoptorein involved in the regulation of lymphopoiesis. Response of cells to IL7 is dependent on the presence of the interleukin 7 receptor (IL7R); the active receptor is a alpha/gamma chain heterodimer. The gamma(c) chain, which also associates with the interleukin-2 receptor, serves primarily to activate signal transduction by the IL7R complex, while the alpha chain of IL7R determines specific signaling events through its association with cytoplasmic signaling molecules. [provided by RefSeq, Jul 2008].",
+            "uniprot_function": null,
+            "go_biological_process": [
+                "cellular homeostasis",
+                "homeostasis of number of cells",
+                "B cell proliferation",
+                "cytokine-mediated signaling pathway",
+                "interleukin-7-mediated signaling pathway",
+                "T cell differentiation",
+                "lymph node development",
+                "positive regulation of cell population proliferation",
+                "hemopoiesis",
+                "positive regulation of receptor signaling pathway via JAK-STAT",
+                "defense response to Gram-positive bacterium",
+                "regulation of cell size",
+                "cell morphogenesis",
+                "positive regulation of gene expression",
+                "negative regulation of T cell apoptotic process",
+                "negative regulation of T cell mediated cytotoxicity",
+                "positive regulation of receptor signaling pathway via STAT",
+                "positive regulation of T cell differentiation in thymus"
+            ]
+        },
+        "reasoning": "IL7R is selected due to its involvement in immune regulation and significant differential expression in luminal epithelial cells and secretory epithelial cells, which are pertinent in prostate cancer biology. It is also associated with the 'FoxO signaling pathway' which plays a role in tumor suppression, thus making it a promising target for prostate adenocarcinoma.\n\nKLF3 has a significant role in transcriptional regulation and is shown to have differential expression in macrophages, which are crucial players in the tumor microenvironment. Its relevance in 'Transcriptional misregulation in cancer' pathways further suggests its potential in cancer biology, particularly in the context of prostate tumors.\n\nNEU1, although with less significant transcription factor pathway enrichment, shows a substantial differential expression in relevant epithelial cell types. This gene is involved in lysosomal functions and regulation of metabolic processes, which are critical in cancer cell survival and adaptation, making NEU1 a potential novel target in cancer treatment strategies. The significant DEG profiles in relevant cell types support further investigation into its role in prostate adenocarcinoma."
+    },
+    "KLF3": {
+        "deg": {
+            "subtype": {
+                "top_subtype": 5,
+                "values": {
+                    "Bronchial club cells": 1.0,
+                    "Prostatic secretory cells": 0.7698,
+                    "Lymphatic endothelial cells": 0.7328,
+                    "Blood vascular endothelial cells": 0.644,
+                    "Luminal cells - KLK3+": 0.6326
+                }
+            },
+            "DEG": [
+                {
+                    "cell_type": "Macrophages",
+                    "pval": 1.944683063027167e-06,
+                    "score": 4.759089469909668,
+                    "logFC": 0.8201481103897095,
+                    "pval_adj": 0.0003111492900843467
+                }
+            ],
+            "TF enrichment": [
+                {
+                    "Term": "Transcriptional misregulation in cancer",
+                    "adj_pval": 0.012619869809124207
+                }
+            ]
+        },
+        "neighbor": {
+            "Gata2": 0.405,
+            "Srf": 0.496,
+            "Hdac2": 0.536,
+            "Dcaf6": 0.433,
+            "Fhl3": 0.731,
+            "Rcor2": 0.428,
+            "Zfp217": 0.407,
+            "Sox6": 0.54,
+            "Tmem184b": 0.455,
+            "Ctbp1": 0.962,
+            "Sox2": 0.436,
+            "Hdac1": 0.504,
+            "Foxp2": 0.428,
+            "Ube2i": 0.519,
+            "Sin3a": 0.624,
+            "Ctbp2": 0.948
+        },
+        "context": {
+            "query": "KLF3",
+            "summary": null,
+            "uniprot_function": null,
+            "go_biological_process": [
+                "negative regulation of transcription by RNA polymerase II",
+                "cellular response to endothelin",
+                "regulation of transcription by RNA polymerase II"
+            ]
+        },
+        "reasoning": "IL7R is selected due to its involvement in immune regulation and significant differential expression in luminal epithelial cells and secretory epithelial cells, which are pertinent in prostate cancer biology. It is also associated with the 'FoxO signaling pathway' which plays a role in tumor suppression, thus making it a promising target for prostate adenocarcinoma.\n\nKLF3 has a significant role in transcriptional regulation and is shown to have differential expression in macrophages, which are crucial players in the tumor microenvironment. Its relevance in 'Transcriptional misregulation in cancer' pathways further suggests its potential in cancer biology, particularly in the context of prostate tumors.\n\nNEU1, although with less significant transcription factor pathway enrichment, shows a substantial differential expression in relevant epithelial cell types. This gene is involved in lysosomal functions and regulation of metabolic processes, which are critical in cancer cell survival and adaptation, making NEU1 a potential novel target in cancer treatment strategies. The significant DEG profiles in relevant cell types support further investigation into its role in prostate adenocarcinoma."
+    },
+    "NEU1": {
+        "deg": {
+            "subtype": {
+                "top_subtype": 5,
+                "values": {
+                    "Prostatic secretory cells": 0.7849,
+                    "Lymphatic endothelial cells": 0.5517,
+                    "Blood vascular endothelial cells": 0.425,
+                    "Activated Mast cells": 0.4005,
+                    "Naive B cells": 0.3615
+                }
+            },
+            "DEG": [
+                {
+                    "cell_type": "Luminal epithelial cells",
+                    "pval": 1.528884013252061e-05,
+                    "score": 4.3244853019714355,
+                    "logFC": 0.6513635516166687,
+                    "pval_adj": 0.0022650133529660164
+                },
+                {
+                    "cell_type": "Secretory epithelial cells",
+                    "pval": 0.002544150994839335,
+                    "score": 3.018040180206299,
+                    "logFC": 0.42056605219841003,
+                    "pval_adj": 0.36345014211990495
+                }
+            ],
+            "TF enrichment": [
+                {
+                    "Term": "Lysosome",
+                    "adj_pval": 0.14438345151538443
+                }
+            ]
+        },
+        "neighbor": {
+            "Sod2": 0.468,
+            "Mettl14": 0.402,
+            "Mettl3": 0.404,
+            "B4galt5": 0.414,
+            "Cmah": 0.414,
+            "Nanp": 0.423,
+            "St3gal5": 0.424,
+            "Slc35a1": 0.428,
+            "Sod3": 0.436,
+            "Acaca": 0.436,
+            "Sod1": 0.436,
+            "Acacb": 0.436,
+            "Nmbr": 0.437,
+            "Tlr2": 0.449,
+            "Nhlrc1": 0.454,
+            "Gpank1": 0.454,
+            "Cyb5d2": 0.471,
+            "Manba": 0.474,
+            "Gusb": 0.478,
+            "Fam149b": 0.483,
+            "Fam149a": 0.483,
+            "Glb1l": 0.489,
+            "St3gal1": 0.501,
+            "Tlr4": 0.509,
+            "St3gal2": 0.511,
+            "Lamp1": 0.513,
+            "Neu3": 0.517,
+            "Neu2": 0.528,
+            "Slc17a5": 0.549,
+            "Gne": 0.556,
+            "Hexb": 0.602,
+            "Eln": 0.62,
+            "Nmb": 0.661,
+            "Hexa": 0.665,
+            "Galns": 0.67,
+            "Neu4": 0.714,
+            "Ercc3": 0.81,
+            "Gal3st1": 0.9,
+            "Ugt8a": 0.905,
+            "Gla": 0.913,
+            "Galc": 0.922,
+            "Arsa": 0.926,
+            "Glb1": 0.956,
+            "Ctsa": 0.998
+        },
+        "context": {
+            "query": "NEU1",
+            "summary": null,
+            "uniprot_function": null,
+            "go_biological_process": [
+                "regulation of myoblast proliferation",
+                "lipid metabolic process",
+                "ganglioside catabolic process",
+                "positive regulation of neuron projection development",
+                "lipid catabolic process",
+                "oligosaccharide catabolic process"
+            ]
+        },
+        "reasoning": "IL7R is selected due to its involvement in immune regulation and significant differential expression in luminal epithelial cells and secretory epithelial cells, which are pertinent in prostate cancer biology. It is also associated with the 'FoxO signaling pathway' which plays a role in tumor suppression, thus making it a promising target for prostate adenocarcinoma.\n\nKLF3 has a significant role in transcriptional regulation and is shown to have differential expression in macrophages, which are crucial players in the tumor microenvironment. Its relevance in 'Transcriptional misregulation in cancer' pathways further suggests its potential in cancer biology, particularly in the context of prostate tumors.\n\nNEU1, although with less significant transcription factor pathway enrichment, shows a substantial differential expression in relevant epithelial cell types. This gene is involved in lysosomal functions and regulation of metabolic processes, which are critical in cancer cell survival and adaptation, making NEU1 a potential novel target in cancer treatment strategies. The significant DEG profiles in relevant cell types support further investigation into its role in prostate adenocarcinoma."
+    }
+}
