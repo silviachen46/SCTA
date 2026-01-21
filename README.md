@@ -181,7 +181,8 @@ MIT License
 Name: Haohan Wang
 Email: [haohanw@illinois.edu]
 
-**First Author**  
-Name: Shuyu Chen
+**Authors**  
+Name: Shuyu Chen, Ye Zhang, Yang Li, Qiqi Xie
 Email: [shuyu5@illinois.edu]
 For questiosn regarding code or data, feel free to reach out via email.
+
