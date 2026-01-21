@@ -1,4 +1,4 @@
-# SCTA: An Agentic Framework for Stable and Interpretable Target Gene Discovery from scRNA-seq
+# SCTA: An Agentic Framework for Stable and Interpretable Target Gene Discovery from Single-Cell RNA Sequencing
 
 ## Overview
 This repository contains the source code for the paper:
