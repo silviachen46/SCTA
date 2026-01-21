@@ -62,7 +62,24 @@ You should place them in the root folder before starting the agents
 ## Running the Pipeline
 
 ### Step 1: Replacing necessary configurations
+## agent_v5.py:
 
+1. replace BIOLOGICAL_CONTEXT with the following context corresponding to your adata
+```bash
+# Prostate adenocarcinoma (GSE193337)
+BIOLOGICAL_CONTEXT = """This dataset comprises single-cell data of human prostate adenocarcinoma samples, including both tumor and benign tissues."""
+
+# Chronic pancreatitis (GSE165045)
+BIOLOGICAL_CONTEXT = """This dataset profiles pancreatic immune cells from healthy donors and patients with chronic pancreatitis of different etiologies (hereditary and idiopathic) using single-cell transcriptomic and surface protein measurements."""
+
+# COVID-19 (GSE149689)
+BIOLOGICAL_CONTEXT = """The dataset contains single-cell RNA sequencing profiles of peripheral blood mononuclear cells collected from healthy individuals, patients with mild COVID-19, patients with severe COVID-19, and patients with severe influenza""" 
+
+```
+
+2. replace your TEST_FILE_NAME(python notebook name, end with .ipynb), GLOBAL_RESULT(has to be .txt, you can check your intermediate steps here), and ADATA_SOURCE_PATH(absolute path to your selected adata file) with your custom name. 
+
+## agent_v5.py:
 
 ### Step 2: Agent-based Analysis
 
