@@ -13,17 +13,19 @@ All results reported in the paper can be reproduced using the instructions below
 
 ## Repository Structure
 ```
-├── data/                  # Input data (or scripts to download data)
-├── preprocessing/         # Single-cell preprocessing code
-├── agents/                # Agent implementations
-├── evaluation/            # Evaluation and ablation analysis
-├── experiments/           # Scripts to reproduce paper experiments
-├── configs/               # Configuration files
-├── scripts/               # Entry-point scripts
-├── figures/               # Code to generate figures
-├── environment.yml        # Conda environment specification
-├── requirements.txt       # Optional pip requirements
+├── baseline/ # Baseline method scripts and runners
+├── biomni_script/ # Biomni baseline running scripts
+├── covid_sample_run/ # Example run artifacts
+│ └── sample_result_files/ # Sample output files produced by the pipeline
+├── agent_v5.py # Core agent orchestration / pipeline logic
+├── call_gpt.py # LLM client wrapper (OpenAI/Azure selection)
+├── executenote.py # Notebook execution / orchestration utilities
+├── main.py # Main entry point
+├── utils_agent.py # Shared utilities used by agents/pipeline
+├── requirements.txt # Python dependencies
+├── .gitignore
 └── README.md
+
 ```
 
 ---
