@@ -30,19 +30,13 @@ All results reported in the paper can be reproduced using the instructions below
 ## Environment Setup
 
 ### System Requirements
-- Operating system: [e.g., Ubuntu 20.04 / macOS 13]
-- Python version: [e.g., Python 3.10]
-- Hardware: [CPU-only / GPU optional]
+- Operating system: macOS (tested on macOS Tahoe 26.2)
+- Python version: [e.g., Python 3.13.1]
+- Hardware: [CPU-only]
 
 ### Install Dependencies
 
-Using conda:
-```bash
-conda env create -f environment.yml
-conda activate scta
-```
-
-Or using pip:
+using pip:
 ```bash
 pip install -r requirements.txt
 ```
@@ -61,17 +55,8 @@ pip install -r requirements.txt
 - Dataset 3: [COVID-19(GSE149689)]  
   Source: [https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE193337]
   
-
-If data cannot be redistributed directly, use the provided download scripts:
-```bash
-bash scripts/download_data.sh
-```
-
-Place downloaded data under:
-```bash
-data/
-```
-
+You can download the preprocessed(label with sample number and disease groups) here: [https://drive.google.com/drive/folders/1XFvLRB8b_ESJhlwW0TmHRgH_JmNZzf7Q?usp=sharing]
+You should place them in the root folder before starting the agents
 ---
 
 ## Running the Pipeline
