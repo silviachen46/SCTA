@@ -4,7 +4,18 @@
 This repository contains the source code for the paper:
 
 **SCTA: An Agentic Framework for Stable and Interpretable Target Gene Discovery from Single-Cell RNA Sequencing**
+
 <img width="727" height="294" alt="image" src="https://github.com/user-attachments/assets/25e43577-4936-4a76-9a09-a5ca66baf9ab" />
+
+**Abstract**
+Diseases with high heterogeneity often exhibit cellular-level variation that cannot be adequately captured by bulk transcriptomic approaches, making single-cell RNA sequencing (scRNA-seq) a powerful modality for dissecting disease endotypes. However, identifying biologically meaningful target genes from scRNA-seq data remains challenging due to the complex, multi-stage, and decision-dependent nature of single-cell analysis workflows, which are further complicated by diverse dataset structures and metadata. We present **SCTA** (Single-Cell Target Agent), a modular, fully autonomous multi-agent framework for end-to-end target gene discovery in single-cell data. SCTA decomposes the analysis into specialized agents with distinct analytical roles and integrates biological knowledge as a structural constraint to guide downstream reasoning. Across multiple independent runs, the framework demonstrates stable convergence of target gene selection, as quantified by selection frequency and pairwise overlap metrics. Representative case studies further show that SCTA can recover biologically coherent and disease-specific mechanisms. Together, this work highlights the agent-based orchestration to enable interpretable, robust, and scalable target gene discovery in single-cell-driven precision medicine.
+
+**Keywords**
+single-cell RNA sequencing,
+target gene discovery,
+agentic framework,
+computational biology
+
 
 The code implements the full pipeline described in the manuscript, including preprocessing, agent coordination, target gene discovery, and evaluation.  
 All results reported in the paper can be reproduced using the instructions below.
@@ -184,5 +195,5 @@ Email: [haohanw@illinois.edu]
 **Authors**  
 Name: Shuyu Chen, Ye Zhang, Yang Li, Qiqi Xie
 Email: [shuyu5@illinois.edu]
-For questiosn regarding code or data, feel free to reach out via email.
+For questions regarding code or data, feel free to reach out via email.
 
