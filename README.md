@@ -189,6 +189,32 @@ MIT License
 
 ---
 
+**Miscellaneous**
+
+current functions in use from utils_agent:
+
+## Preprocess Stage
+- `filter_cells`
+- `normalize_log_transform`
+- `filter_lowqc_cells`
+- `save_high_var_gene`
+- `pca_and_plot_umap`
+- `get_top_marker_genes`
+- `quick_inspect_adata`
+
+## Annotate Stage
+- `assign_cell_categories`
+- `assign_cell_subtype`
+- `quick_inspect_adata`
+
+## Insight Stage
+- `get_deg_full`
+- `get_gene_by_disease`
+
+## **Miscellaneous**
+- `quick_inspect_adata`
+
+
 ## Contact
 **Corresponding Author**  
 Name: Haohan Wang
