@@ -204,14 +204,14 @@ current functions in use from utils_agent:
 ### Annotate Stage
 - `assign_cell_categories`
 - `assign_cell_subtype`
-- `quick_inspect_adata`
 
 ### Insight Stage
 - `get_deg_full`
 - `get_gene_by_disease`
 
-### **Miscellaneous**
-- `quick_inspect_adata`
+### Filter Stage
+- `fetch_string_neighbors_clean`
+- `fetch_gene_summary`
 
 
 ## Contact
