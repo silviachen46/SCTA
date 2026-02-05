@@ -189,11 +189,10 @@ MIT License
 
 ---
 
-**Miscellaneous**
 
 current functions in use from utils_agent:
 
-## Preprocess Stage
+### Preprocess Stage
 - `filter_cells`
 - `normalize_log_transform`
 - `filter_lowqc_cells`
@@ -202,16 +201,16 @@ current functions in use from utils_agent:
 - `get_top_marker_genes`
 - `quick_inspect_adata`
 
-## Annotate Stage
+### Annotate Stage
 - `assign_cell_categories`
 - `assign_cell_subtype`
 - `quick_inspect_adata`
 
-## Insight Stage
+### Insight Stage
 - `get_deg_full`
 - `get_gene_by_disease`
 
-## **Miscellaneous**
+### **Miscellaneous**
 - `quick_inspect_adata`
 
 
